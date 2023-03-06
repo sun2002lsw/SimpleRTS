@@ -9,9 +9,10 @@ public class CameraSystem : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private float FIELD_SIZE = 250;
-    private float CAMERA_MOVE_SPEED = 500;
+    private float CAMERA_ROTATE_SPEED = 300;
+    private float CAMERA_MOVE_SPEED = 5;
     private float CAMERA_ZOOM_SPEED = 5;
-    private float CAMERA_ZOOM_MAX = 300;
+    private float CAMERA_ZOOM_MAX = 100;
     private float CAMERA_ZOOM_MIN = 10;
     private float EDGE_SCROLL_SIZE = 20;
 
@@ -21,6 +22,7 @@ public class CameraSystem : MonoBehaviour
     void Start()
     {
         // todo. 부드럽게 미끄러지면서 시작
+        zoomTargetOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         ResetCamera();
     }
 
@@ -29,8 +31,8 @@ public class CameraSystem : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, 0);
 
         // special setting for Vertical FOV: 60
-        float defaultOffsetZ = -50;
-        zoomTargetOffset = new Vector3(0, Mathf.Sqrt(3) * -defaultOffsetZ, defaultOffsetZ);
+        float zOffset = zoomTargetOffset.magnitude / 2;
+        zoomTargetOffset = new Vector3(0, Mathf.Sqrt(3) * zOffset, -zOffset);
         virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = zoomTargetOffset;
     }
 
@@ -60,9 +62,12 @@ public class CameraSystem : MonoBehaviour
 
         // convert by view angle
         Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-        Vector3 newPos = transform.position + moveDir * CAMERA_MOVE_SPEED * Time.deltaTime;
+
+        // set speed by zoom
+        moveDir *= CAMERA_MOVE_SPEED * zoomTargetOffset.magnitude * Time.deltaTime;
 
         // set limitation
+        Vector3 newPos = transform.position + moveDir;
         newPos.x = Mathf.Clamp(newPos.x, -FIELD_SIZE, FIELD_SIZE);
         newPos.z = Mathf.Clamp(newPos.z, -FIELD_SIZE, FIELD_SIZE);
 
@@ -117,11 +122,11 @@ public class CameraSystem : MonoBehaviour
 
         // left & right
         Vector3 rotateLeftRight = new Vector3(0, Input.GetAxisRaw("Mouse X"), 0);
-        transform.eulerAngles += rotateLeftRight * CAMERA_MOVE_SPEED * Time.deltaTime;
+        transform.eulerAngles += rotateLeftRight * CAMERA_ROTATE_SPEED * Time.deltaTime;
 
         // up & down
         Vector3 currentUpDown = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-        float rotateAngle = -Input.GetAxisRaw("Mouse Y") * CAMERA_MOVE_SPEED * Time.deltaTime;
+        float rotateAngle = -Input.GetAxisRaw("Mouse Y") * CAMERA_ROTATE_SPEED * Time.deltaTime;
         Vector3 rotateUpDown = Quaternion.Euler(rotateAngle, 0, 0) * currentUpDown;
         if (rotateUpDown.y < 5 || rotateUpDown.z > 0)
             return;
