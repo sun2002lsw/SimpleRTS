@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Stop : Order
 {
-    Transform originPosition;
+    Vector3 originPosition;
 
-    public Stop(Transform originPosition)
+    public Stop(Vector3 originPosition)
     {
         this.originPosition = originPosition;
     }

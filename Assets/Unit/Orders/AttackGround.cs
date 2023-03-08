@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AttackGround : Order
 {
-    Transform destination;
+    Vector3 destination;
 
-    public AttackGround(Transform destination)
+    public AttackGround(Vector3 destination)
     {
         this.destination = destination;
     }

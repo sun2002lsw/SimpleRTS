@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class Move : Order
 {
-    Transform destination;
+    Vector3 destination;
 
-    public Move(Transform destination)
+    public Move(Vector3 destination)
     {
         this.destination = destination;
     }
 
     public bool ControllUnit(Unit unit)
     {
-        return true;
+        if (unit.IsArrivedAt(destination))
+            return true;
+
+        if (unit.RotateTo(destination)) 
+            if (unit.MoveTo(destination))
+                return true;
+
+        return false;
     }
 }
