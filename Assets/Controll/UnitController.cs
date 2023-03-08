@@ -21,8 +21,13 @@ public class UnitController : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse1))
             foreach (var unit in allyUnits)
             {
-                Vector3 unitDestination = unit.EqualizeYpos(destination);
+                Vector3 unitDestination = refineDestinationForUnit(unit, destination);
                 unit.SetOrder(new Move(unitDestination));
             }
+    }
+
+    Vector3 refineDestinationForUnit(Unit unit, Vector3 destination)
+    {
+        return new Vector3(destination.x, unit.transform.position.y, destination.z);
     }
 }

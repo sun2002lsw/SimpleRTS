@@ -4,15 +4,12 @@ using IsComplete = System.Boolean;
 
 public class Unit : MonoBehaviour
 {
+    public Animator animator; 
+
     Order curOrder;
 
     float rotationSpeed = 5;
     float movementSpeed = 5;
-
-    public Vector3 EqualizeYpos(Vector3 v)
-    {
-        return new Vector3(v.x, transform.position.y, v.z);
-    }
 
     public void SetOrder(Order order)
     { 
@@ -27,7 +24,7 @@ public class Unit : MonoBehaviour
     public IsComplete RotateTo(Vector3 destination)
     {
         Vector3 direction = destination - transform.position;
-        if (Vector3.Angle(transform.forward, direction) == 0)
+        if (Vector3.Angle(transform.forward, direction) < rotationSpeed)
             return true;
 
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotationSpeed * Time.deltaTime, 0);
@@ -37,12 +34,11 @@ public class Unit : MonoBehaviour
 
     public IsComplete MoveTo(Vector3 destination)
     {
-        Debug.LogFormat("{0} to {1}", transform.position, destination);
-
         if (transform.position == destination) 
             return true;
 
         transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
+        animator.SetTrigger("move");
         return false;
     }
 
@@ -59,8 +55,11 @@ public class Unit : MonoBehaviour
     void executeOrder()
     {
         IsComplete complete = curOrder.ControllUnit(this);
-        if (complete)
-            getNextOrder();
+        if (!complete)
+            return;
+
+        animator.SetTrigger("stop");
+        getNextOrder();
     }
 
     void getNextOrder()
