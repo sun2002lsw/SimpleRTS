@@ -9,6 +9,16 @@ public class Unit : MonoBehaviour
     float rotationSpeed = 5;
     float movementSpeed = 5;
 
+    public Vector3 EqualizeYpos(Vector3 v)
+    {
+        return new Vector3(v.x, transform.position.y, v.z);
+    }
+
+    public void SetOrder(Order order)
+    { 
+        curOrder = order; 
+    }
+
     public bool IsArrivedAt(Vector3 destination)
     {
         return transform.position == destination;
@@ -27,6 +37,8 @@ public class Unit : MonoBehaviour
 
     public IsComplete MoveTo(Vector3 destination)
     {
+        Debug.LogFormat("{0} to {1}", transform.position, destination);
+
         if (transform.position == destination) 
             return true;
 
