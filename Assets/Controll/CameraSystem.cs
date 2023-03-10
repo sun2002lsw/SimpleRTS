@@ -6,7 +6,7 @@ using Cinemachine;
 
 public class CameraSystem : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera virtualCamera;
 
     private float FIELD_SIZE = 250;
     private float CAMERA_ROTATE_SPEED = 300;

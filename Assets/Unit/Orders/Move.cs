@@ -9,6 +9,11 @@ public class Move : Order
         this.destination = destination;
     }
 
+    public string Name()
+    {
+        return "Move";
+    }
+
     public bool ControllUnit(Unit unit)
     {
         return unit.MoveToDestination(destination);

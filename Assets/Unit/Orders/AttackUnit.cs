@@ -7,6 +7,11 @@ public class AttackUnit : Order
         this.target = target;
     }
 
+    public string Name()
+    {
+        return "AttackUnit";
+    }
+
     public bool ControllUnit(Unit unit)
     {
         return true;

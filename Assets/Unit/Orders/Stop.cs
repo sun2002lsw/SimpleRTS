@@ -9,6 +9,11 @@ public class Stop : Order
         this.originPosition = originPosition;
     }
 
+    public string Name()
+    {
+        return "Stop";
+    }
+
     public bool ControllUnit(Unit unit)
     {
         return true;

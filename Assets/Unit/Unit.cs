@@ -27,15 +27,8 @@ public class Unit : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    void Start()
-    {
-        // do nothing
-    }
-
     void Update()
     {
-        Debug.LogFormat("current speed: {0}", navMeshAgent.velocity.magnitude);
-
         executeOrder();
     }
 
@@ -45,13 +38,12 @@ public class Unit : MonoBehaviour
             orders.Add(new Stop(transform.position));
 
         Order curOrder = orders[0];
-
         IsComplete complete = curOrder.ControllUnit(this);
         if (complete)
             orders.Remove(curOrder);
     }
 
-    public bool MoveToDestination(Vector3 destination)
+    public IsComplete MoveToDestination(Vector3 destination)
     {
         if (navMeshAgent.destination != destination)
             navMeshAgent.SetDestination(destination);
@@ -72,6 +64,6 @@ public class Unit : MonoBehaviour
 
     private bool arrivedAtDestination()
     {
-        return Vector3.Distance(transform.position, navMeshAgent.destination) < 0.5;
+        return Vector3.Distance(transform.position, navMeshAgent.destination) < 0.1;
     }
 }

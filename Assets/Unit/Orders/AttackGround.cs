@@ -9,6 +9,11 @@ public class AttackGround : Order
         this.destination = destination;
     }
 
+    public string Name()
+    {
+        return "AttackGround";
+    }
+
     public bool ControllUnit(Unit unit)
     {
         return true;
