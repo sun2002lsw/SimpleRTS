@@ -1,70 +1,73 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 using IsComplete = System.Boolean;
 
 public class Unit : MonoBehaviour
 {
-    public Animator animator; 
-
-    Order curOrder;
-
-    float rotationSpeed = 5;
-    float movementSpeed = 5;
+    private Animator animator;
+    private NavMeshAgent navMeshAgent;
+    private List<Order> orders = new List<Order>();
 
     public void SetOrder(Order order)
-    { 
-        curOrder = order; 
+    {
+        orders.Clear();
+        orders.Add(order);
     }
 
-    public bool IsArrivedAt(Vector3 destination)
+    public void AddOrder(Order order)
     {
-        return transform.position == destination;
+        orders.Add(order);
     }
 
-    public IsComplete RotateTo(Vector3 destination)
+    private void Awake()
     {
-        Vector3 direction = destination - transform.position;
-        if (Vector3.Angle(transform.forward, direction) < rotationSpeed)
-            return true;
-
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotationSpeed * Time.deltaTime, 0);
-        transform.rotation = Quaternion.LookRotation(newDirection);
-        return false;
-    }
-
-    public IsComplete MoveTo(Vector3 destination)
-    {
-        if (transform.position == destination) 
-            return true;
-
-        transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
-        animator.SetTrigger("move");
-        return false;
+        animator = GetComponent<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     void Start()
     {
-        curOrder = new Stop(transform.position);
+        // do nothing
     }
 
     void Update()
     {
+        Debug.LogFormat("current speed: {0}", navMeshAgent.velocity.magnitude);
+
         executeOrder();
     }
 
     void executeOrder()
     {
-        IsComplete complete = curOrder.ControllUnit(this);
-        if (!complete)
-            return;
+        if (orders.Count == 0)
+            orders.Add(new Stop(transform.position));
 
-        animator.SetTrigger("stop");
-        getNextOrder();
+        Order curOrder = orders[0];
+
+        IsComplete complete = curOrder.ControllUnit(this);
+        if (complete)
+            orders.Remove(curOrder);
     }
 
-    void getNextOrder()
+    public bool MoveToDestination(Vector3 destination)
     {
-        Order nextOrder = new Stop(transform.position);
-        curOrder = nextOrder;
+        if (navMeshAgent.destination != destination)
+            navMeshAgent.SetDestination(destination);
+
+        if (arrivedAtDestination())
+        {
+            animator.SetBool("isMoving", false);
+            return true;
+        }
+
+        animator.SetBool("isMoving", true);
+        return false;
+    }
+
+    private bool arrivedAtDestination()
+    {
+        return Vector3.Distance(transform.position, navMeshAgent.destination) < 0.5;
     }
 }

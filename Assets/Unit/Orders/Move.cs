@@ -11,13 +11,6 @@ public class Move : Order
 
     public bool ControllUnit(Unit unit)
     {
-        if (unit.IsArrivedAt(destination))
-            return true;
-
-        if (unit.RotateTo(destination)) 
-            if (unit.MoveTo(destination))
-                return true;
-
-        return false;
+        return unit.MoveToDestination(destination);
     }
 }
