@@ -3,25 +3,32 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    Camera mainCamera;
+
     List<Unit> allyUnits = new List<Unit>();
-    GameObject decoy;
+
+    private void Awake()
+    {
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    }
 
     void Start()
     {
         foreach(var gameObject in GameObject.FindGameObjectsWithTag("ally"))
             allyUnits.Add(gameObject.GetComponent<Unit>());
-
-        decoy = GameObject.FindGameObjectWithTag("enemy");
     }
 
     void Update()
     {
-        Vector3 destination = decoy.transform.position;
+        if (!Input.GetKey(KeyCode.Mouse1))
+            return;
 
-        if (Input.GetKey(KeyCode.Mouse1))
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit raycastHit;
+        if (Physics.Raycast(ray, out raycastHit))
             foreach (var unit in allyUnits)
             {
-                Vector3 unitDestination = refineDestinationForUnit(unit, destination);
+                Vector3 unitDestination = refineDestinationForUnit(unit, raycastHit.point);
                 unit.SetOrder(new Move(unitDestination));
             }
     }

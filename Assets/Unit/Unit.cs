@@ -62,7 +62,11 @@ public class Unit : MonoBehaviour
             return true;
         }
 
-        animator.SetBool("isMoving", true);
+        if (navMeshAgent.velocity.magnitude > 2)
+            animator.SetBool("isMoving", true);
+        else
+            animator.SetBool("isMoving", false);
+
         return false;
     }
 
