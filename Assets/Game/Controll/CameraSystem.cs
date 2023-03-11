@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Cinemachine;
 
 public class CameraSystem : MonoBehaviour
 {
-    public CinemachineVirtualCamera virtualCamera;
+    [SerializeField]
+    private CinemachineVirtualCamera virtualCamera;
 
     private float FIELD_SIZE = 250;
-    private float CAMERA_ROTATE_SPEED = 300;
-    private float CAMERA_MOVE_SPEED = 5;
+    private float CAMERA_ROTATE_SPEED = 100;
+    private float CAMERA_MOVE_SPEED = 3;
     private float CAMERA_ZOOM_SPEED = 5;
     private float CAMERA_ZOOM_MAX = 100;
     private float CAMERA_ZOOM_MIN = 10;
@@ -18,6 +16,8 @@ public class CameraSystem : MonoBehaviour
 
     private Vector3 zoomTargetOffset;
     private bool zoomProcessing;
+
+    private Vector3 savedCursorPos;
 
     void Start()
     {
@@ -118,7 +118,12 @@ public class CameraSystem : MonoBehaviour
     private void RotateCamera()
     {
         if (!Input.GetKey(KeyCode.Mouse2) || zoomProcessing)
+        {
+            cursorVisible();
             return;
+        }
+
+        cursorInvisible();
 
         // left & right
         Vector3 rotateLeftRight = new Vector3(0, Input.GetAxisRaw("Mouse X"), 0);
@@ -129,7 +134,26 @@ public class CameraSystem : MonoBehaviour
         float rotateAngle = -Input.GetAxisRaw("Mouse Y") * CAMERA_ROTATE_SPEED * Time.deltaTime;
         Vector3 rotateUpDown = Quaternion.Euler(rotateAngle, 0, 0) * currentUpDown;
         if (rotateUpDown.y < 5 || rotateUpDown.z > 0)
-            return;
+            return; // too low or high angle
         virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = rotateUpDown;
+    }
+
+    private void cursorInvisible()
+    {
+        if (!Cursor.visible)
+            return;
+
+        savedCursorPos = Input.mousePosition;
+        Cursor.visible = false;
+    }
+
+    private void cursorVisible()
+    {
+        if (Cursor.visible)
+            return;
+
+        Vector2 pos = new Vector2(savedCursorPos.x, savedCursorPos.y);
+        UnityEngine.InputSystem.Mouse.current.WarpCursorPosition(pos);
+        Cursor.visible = true;
     }
 }
