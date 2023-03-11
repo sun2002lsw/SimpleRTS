@@ -7,7 +7,11 @@ using IsComplete = System.Boolean;
 public class Unit : MonoBehaviour
 {
     private UnitData unitData = null;
-    public UnitData UnitData { set { unitData = value; } }
+    public UnitData UnitData 
+    { 
+        get { return unitData; } 
+        set { unitData = value; } 
+    }
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;

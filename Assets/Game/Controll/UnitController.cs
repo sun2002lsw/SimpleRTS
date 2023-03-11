@@ -5,12 +5,16 @@ public class UnitController : MonoBehaviour
 {
     private Camera mainCamera;
 
-    public Texture2D cursor_default;
-    public Texture2D cursor_attckMode;
-    public Texture2D cursor_ally;
-    public Texture2D cursor_enemy;
-    private Texture2D currentCursor;
+    [SerializeField]
+    private Texture2D cursor_default;
+    [SerializeField]
+    private Texture2D cursor_attckMode;
+    [SerializeField]
+    private Texture2D cursor_ally;
+    [SerializeField]
+    private Texture2D cursor_enemy;
 
+    private Texture2D currentCursor;
     private bool attackMode = false;
     private Vector3 mousePos = Vector3.zero;
     private GameObject mouseObject = null;
@@ -20,6 +24,7 @@ public class UnitController : MonoBehaviour
     void Awake()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start()

@@ -42,14 +42,14 @@ public class ArmyDeploy : MonoBehaviour
     GameObject spawnUnit(GameObject obj, UnitData data, Vector3 pos)
     {
         GameObject instance = Instantiate(obj);
-
         instance.transform.position = pos;
-        lookCenterLine(ref instance);
-        setTagByPosition(ref instance);
-        //setColorByTag(ref instance);
 
         Unit unit = instance.GetComponent<Unit>();
         unit.UnitData = data;
+
+        lookCenterLine(ref instance);
+        setTagByPosition(ref instance);
+        setUnitColorByTag(ref instance);
 
         return instance;
     }
@@ -69,12 +69,34 @@ public class ArmyDeploy : MonoBehaviour
             obj.tag = "ally";
     }
 
-    void setColorByTag(ref GameObject obj)
+    void setUnitColorByTag(ref GameObject obj)
     {
-        if (obj.tag == "enemy")
-        {
-            Renderer renderer = obj.GetComponent<Renderer>();
-            renderer.material.color = Color.red;
-        }
+        Unit unit = obj.GetComponent<Unit>();
+        if (unit == null)
+            return;
+
+        if (obj.tag == "ally")
+            setUnitColor(ref obj, Color.blue);
+        else if (obj.tag == "enemy")
+            setUnitColor(ref obj, Color.red);
+        else
+            setUnitColor(ref obj, Color.yellow);
+    }
+
+    void setUnitColor(ref GameObject obj, Color color)
+    {
+        Transform armors = obj.transform.Find("Armors");
+        if (armors == null)
+            return;
+
+        Transform chest = armors.Find("Chest");
+        if (chest == null)
+            return;
+
+        SkinnedMeshRenderer renderer = chest.GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null)
+            return;
+
+        renderer.material.color = color;
     }
 }
