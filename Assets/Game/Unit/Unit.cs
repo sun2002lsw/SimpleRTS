@@ -24,13 +24,13 @@ public class Unit : MonoBehaviour
         orders.Add(order);
     }
 
-    private void Awake()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    private void Start()
+    void Start()
     {
         if (unitData == null)
         {

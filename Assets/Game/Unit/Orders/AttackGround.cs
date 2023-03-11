@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AttackGround : Order
 {
-    Vector3 destination;
+    private Vector3 destination;
 
     public AttackGround(Vector3 destination)
     {

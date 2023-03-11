@@ -783,6 +783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998256720}
+  - component: {fileID: 1998256721}
   m_Layer: 0
   m_Name: UnitSpawner
   m_TagString: Untagged
@@ -805,3 +806,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1998256721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998256719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71843c32def1b6b4fbd6bebc739c89b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordsmanPrefab: {fileID: 6516799984629776144, guid: 732f7db735d6a3d47b3efa1acfd9672f, type: 3}
+  swordsmanData: {fileID: 11400000, guid: 0d3dd4b5492b7854e8deadb050300653, type: 2}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Move : Order
 {
-    Vector3 destination;
+    private Vector3 destination;
 
     public Move(Vector3 destination)
     {

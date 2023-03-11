@@ -1,6 +1,6 @@
 public class AttackUnit : Order
 {
-    Unit target;
+    private Unit target;
 
     public AttackUnit(Unit target)
     {

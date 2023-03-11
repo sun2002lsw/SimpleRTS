@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Stop : Order
 {
-    Vector3 originPosition;
+    private Vector3 originPosition;
 
     public Stop(Vector3 originPosition)
     {
