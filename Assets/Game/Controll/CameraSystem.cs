@@ -91,6 +91,11 @@ public class CameraSystem : MonoBehaviour
         Vector3 unitVector = zoomTargetOffset.normalized;
         float beforeMagnitude = zoomTargetOffset.magnitude;
         zoomTargetOffset += beforeMagnitude / 2 * unitVector * -scroll;
+        if (zoomTargetOffset.y < 0)
+        {
+            zoomTargetOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+            return; // inverted camera error. rollback value
+        }
 
         float afterMagnitude = zoomTargetOffset.magnitude;
         if (afterMagnitude > CAMERA_ZOOM_MAX)
@@ -112,7 +117,7 @@ public class CameraSystem : MonoBehaviour
         Vector3 currentOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         float big = Mathf.Max(currentOffset.magnitude, zoomTargetOffset.magnitude);
         float small = Mathf.Min(currentOffset.magnitude, zoomTargetOffset.magnitude);
-        if (small / big > 0.9f)
+        if (small / big > 0.9f) // 90%ก่ complete -> end of process
             zoomProcessing = false;
     }
 
