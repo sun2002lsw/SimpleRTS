@@ -6,6 +6,9 @@ using IsComplete = System.Boolean;
 
 public class Unit : MonoBehaviour
 {
+    private UnitData unitData = null;
+    public UnitData UnitData { set { unitData = value; } }
+
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private List<Order> orders = new List<Order>();
@@ -25,6 +28,15 @@ public class Unit : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        if (unitData == null)
+        {
+            Debug.LogAssertionFormat("Invalid unitData object detected: {0}", transform.position);
+            Destroy(gameObject);
+        }
     }
 
     void Update()

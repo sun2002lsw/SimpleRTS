@@ -4119,7 +4119,7 @@ GameObject:
   - component: {fileID: -1515851786585384689}
   m_Layer: 0
   m_Name: Swordsman
-  m_TagString: ally
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4174,6 +4174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c12c5051618bb46998a5ca70f8107b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitData: {fileID: 11400000, guid: 0d3dd4b5492b7854e8deadb050300653, type: 2}
 --- !u!195 &898236783012549110
 NavMeshAgent:
   m_ObjectHideFlags: 0
