@@ -17,6 +17,7 @@ public class UnitController : MonoBehaviour
 
     private Texture2D currentCursor;
     private bool attackMode = false;
+    private Vector3 boxingStartPos = Vector3.zero;
     private Vector3 mousePos = Vector3.zero;
     private GameObject mouseObject = null;
 
@@ -34,6 +35,7 @@ public class UnitController : MonoBehaviour
         {
             Unit unit = gameObject.GetComponent<Unit>();
             selectedUnits.Add(unit);
+            unit.SetSelection(true);
         }
     }
 
@@ -46,43 +48,88 @@ public class UnitController : MonoBehaviour
             return;
         }
 
-        if (attackMode && Input.GetKeyDown(KeyCode.Mouse0))
+        checkMousePos();
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            processMouseLeftDown();
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+            processMouseLeftUp();
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            processMouseRightDown();
+        else
+            processMouseHovering();
+    }
+
+    void processMouseLeftDown()
+    {
+        if (attackMode)
         {
-            checkMousePos();
             giveOrder(new AttackGround(mousePos));
 
             attackMode = false;
             setMouseCursor(cursor_default);
+
             return;
         }
 
-        if (attackMode && Input.GetKeyDown(KeyCode.Mouse1))
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            foreach (Unit unSelectUnit in selectedUnits)
+                unSelectUnit.SetSelection(false);
+            selectedUnits.Clear();
+        }
+
+        boxingStartPos = mousePos;
+    }
+
+    void processMouseLeftUp()
+    {
+        if (boxingStartPos != Vector3.zero)
+        {
+            // process boxing select
+            boxingStartPos = Vector3.zero;
+        }
+
+        if (isCursorOnAlly())
+        {
+            Unit selectUnit = mouseObject.GetComponent<Unit>();
+            selectedUnits.Add(selectUnit);
+            selectUnit.SetSelection(true);
+        }
+    }
+
+    void processMouseRightDown()
+    {
+        if (attackMode)
         {
             attackMode = false;
             setMouseCursor(cursor_default);
+
             return;
         }
 
+        if (isCursorOnEnemy())
+        {
+            Unit unit = mouseObject.GetComponent<Unit>();
+            giveOrder(new AttackUnit(unit));
+
+            return;
+        }
+
+        giveOrder(new Move(mousePos));
+    }
+
+    void processMouseHovering()
+    {
         if (attackMode)
             return;
 
-        checkMousePos();
-
-        if (isAlly())
+        if (isCursorOnAlly())
             setMouseCursor(cursor_ally);
-        else if (isEnemy())
+        else if (isCursorOnEnemy())
             setMouseCursor(cursor_enemy);
         else
             setMouseCursor(cursor_default);
-
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-            if (isEnemy())
-            {
-                Unit unit = mouseObject.GetComponent<Unit>();
-                giveOrder(new AttackUnit(unit));
-            }
-            else
-                giveOrder(new Move(mousePos));
     }
 
     void setMouseCursor(Texture2D cursor)
@@ -110,7 +157,7 @@ public class UnitController : MonoBehaviour
             mouseObject = null;
     }
 
-    bool isAlly()
+    bool isCursorOnAlly()
     {
         if (mouseObject == null) 
             return false;
@@ -118,7 +165,7 @@ public class UnitController : MonoBehaviour
         return mouseObject.tag == "ally";
     }
 
-    bool isEnemy()
+    bool isCursorOnEnemy()
     {
         if (mouseObject == null)
             return false;

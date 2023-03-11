@@ -13,9 +13,16 @@ public class Unit : MonoBehaviour
         set { unitData = value; } 
     }
 
+    private bool isMoving = false;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
+    private SpriteRenderer spriteRenderer;
     private List<Order> orders = new List<Order>();
+
+    public void SetSelection(bool selected)
+    {
+        spriteRenderer.enabled = selected;
+    }
 
     public void GiveOrder(Order order, bool cancelOtherOrders)
     {
@@ -29,6 +36,7 @@ public class Unit : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        spriteRenderer = transform.Find("SelectionUI").GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -42,6 +50,9 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
+        if (!isMoving)
+            isMoving = navMeshAgent.velocity.magnitude > 0;
+
         executeOrder();
     }
 
@@ -77,6 +88,6 @@ public class Unit : MonoBehaviour
 
     private bool arrivedAtDestination()
     {
-        return Vector3.Distance(transform.position, navMeshAgent.destination) < 0.1;
+        return Vector3.Distance(transform.position, navMeshAgent.destination) < 1;
     }
 }
