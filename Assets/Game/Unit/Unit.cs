@@ -13,7 +13,6 @@ public class Unit : MonoBehaviour
         set { unitData = value; } 
     }
 
-    private bool isMoving = false;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
@@ -50,9 +49,6 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
-        if (!isMoving)
-            isMoving = navMeshAgent.velocity.magnitude > 0;
-
         executeOrder();
     }
 

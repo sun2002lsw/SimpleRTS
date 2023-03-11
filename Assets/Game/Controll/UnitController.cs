@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
@@ -17,6 +18,7 @@ public class UnitController : MonoBehaviour
 
     private Texture2D currentCursor;
     private bool attackMode = false;
+    private bool cancelOtherOrders = false;
     private Vector3 boxingStartPos = Vector3.zero;
     private Vector3 mousePos = Vector3.zero;
     private GameObject mouseObject = null;
@@ -49,6 +51,7 @@ public class UnitController : MonoBehaviour
         }
 
         checkMousePos();
+        cancelOtherOrders = !Input.GetKey(KeyCode.LeftShift);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             processMouseLeftDown();
@@ -64,7 +67,7 @@ public class UnitController : MonoBehaviour
     {
         if (attackMode)
         {
-            giveOrder(new AttackGround(mousePos));
+            attackWithFormation();
 
             attackMode = false;
             setMouseCursor(cursor_default);
@@ -110,13 +113,11 @@ public class UnitController : MonoBehaviour
 
         if (isCursorOnEnemy())
         {
-            Unit unit = mouseObject.GetComponent<Unit>();
-            giveOrder(new AttackUnit(unit));
-
+            attackUnit();
             return;
         }
 
-        giveOrder(new Move(mousePos));
+        moveWithFormation();
     }
 
     void processMouseHovering()
@@ -173,11 +174,43 @@ public class UnitController : MonoBehaviour
         return mouseObject.tag == "enemy";
     }
 
-    void giveOrder(Order order)
+    void attackWithFormation()
     {
-        bool cancelOtherOrders = !Input.GetKey(KeyCode.LeftShift);
+        Vector3 center = selectedUnitsCenter();
+
+        foreach (var unit in selectedUnits)
+        {
+            Vector3 destination = mousePos + (unit.transform.position - center);
+            unit.GiveOrder(new AttackGround(destination), cancelOtherOrders);
+        }
+    }
+
+    void moveWithFormation()
+    {
+        Vector3 center = selectedUnitsCenter();
+
+        foreach (var unit in selectedUnits)
+        {
+            Vector3 destination = mousePos + unit.transform.position - center;
+            unit.GiveOrder(new Move(destination), cancelOtherOrders);
+        }
+    }
+
+    void attackUnit()
+    {
+        Unit target = mouseObject.GetComponent<Unit>();
+        Order order = new AttackUnit(target);
 
         foreach (var unit in selectedUnits)
             unit.GiveOrder(order, cancelOtherOrders);
+    }
+
+    Vector3 selectedUnitsCenter()
+    {
+        Vector3 total = Vector3.zero;
+        foreach (var unit in selectedUnits)
+            total += unit.transform.position;
+
+        return total / selectedUnits.Count;
     }
 }
