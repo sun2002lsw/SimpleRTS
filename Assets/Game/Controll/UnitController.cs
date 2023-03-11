@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +31,10 @@ public class UnitController : MonoBehaviour
     void Start()
     {
         foreach (var gameObject in GameObject.FindGameObjectsWithTag("ally"))
-            selectedUnits.Add(gameObject.GetComponent<Unit>());
+        {
+            Unit unit = gameObject.GetComponent<Unit>();
+            selectedUnits.Add(unit);
+        }
     }
 
     void Update()
@@ -73,7 +77,10 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
             if (isEnemy())
-                giveOrder(new AttackUnit(mouseObject.GetComponent<Unit>()));
+            {
+                Unit unit = mouseObject.GetComponent<Unit>();
+                giveOrder(new AttackUnit(unit));
+            }
             else
                 giveOrder(new Move(mousePos));
     }
@@ -121,11 +128,9 @@ public class UnitController : MonoBehaviour
 
     void giveOrder(Order order)
     {
-        foreach (var unit in selectedUnits)
-            if (Input.GetKey(KeyCode.LeftShift))
-                unit.AddOrder(order);
-            else
-                unit.SetOrder(order);
-    }
+        bool cancelOtherOrders = !Input.GetKey(KeyCode.LeftShift);
 
+        foreach (var unit in selectedUnits)
+            unit.GiveOrder(order, cancelOtherOrders);
+    }
 }

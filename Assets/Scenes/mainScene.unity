@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 416947931}
   - component: {fileID: 416947930}
   - component: {fileID: 416947929}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Ocean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.4964775, y: 0.000000039313726, z: -0.00000002248533, w: 0.8680496}
+  m_LocalRotation: {x: 0.49647754, y: -0.000000014389837, z: 0.00000000823021, w: 0.8680496}
   m_LocalPosition: {x: 0, y: 17, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 1638705594}
   - component: {fileID: 1638705593}
   - component: {fileID: 1638705592}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815006264}
-  m_LocalRotation: {x: 0.4964775, y: 0.000000039313726, z: -0.00000002248533, w: 0.8680496}
+  m_LocalRotation: {x: 0.49647754, y: -0.000000014389837, z: 0.00000000823021, w: 0.8680496}
   m_LocalPosition: {x: 0, y: 17, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

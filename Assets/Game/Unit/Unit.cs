@@ -17,14 +17,11 @@ public class Unit : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private List<Order> orders = new List<Order>();
 
-    public void SetOrder(Order order)
+    public void GiveOrder(Order order, bool cancelOtherOrders)
     {
-        orders.Clear();
-        orders.Add(order);
-    }
+        if (cancelOtherOrders)
+            orders.Clear();
 
-    public void AddOrder(Order order)
-    {
         orders.Add(order);
     }
 
