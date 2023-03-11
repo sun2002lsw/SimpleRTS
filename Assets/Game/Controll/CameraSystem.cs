@@ -85,11 +85,12 @@ public class CameraSystem : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse2) || Input.mouseScrollDelta.y == 0)
             return;
 
+        float scroll = Mathf.Clamp(Input.mouseScrollDelta.y, -3, 3);
         zoomTargetOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
 
         Vector3 unitVector = zoomTargetOffset.normalized;
         float beforeMagnitude = zoomTargetOffset.magnitude;
-        zoomTargetOffset += beforeMagnitude / 2 * unitVector * -Input.mouseScrollDelta.y;
+        zoomTargetOffset += beforeMagnitude / 2 * unitVector * -scroll;
 
         float afterMagnitude = zoomTargetOffset.magnitude;
         if (afterMagnitude > CAMERA_ZOOM_MAX)
