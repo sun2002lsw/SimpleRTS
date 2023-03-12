@@ -48,7 +48,7 @@ public class CameraSystem : MonoBehaviour
 
     private void MoveCamera()
     {
-        if (Input.GetKey(KeyCode.Mouse2))
+        if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.Mouse2))
             return;
 
         // get keyboard input

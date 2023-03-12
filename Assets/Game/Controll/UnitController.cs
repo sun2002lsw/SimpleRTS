@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class UnitController : MonoBehaviour
 {
     private Camera mainCamera;
 
+    private Texture2D currentCursor;
     [SerializeField]
     private Texture2D cursor_default;
     [SerializeField]
@@ -16,29 +19,33 @@ public class UnitController : MonoBehaviour
     [SerializeField]
     private Texture2D cursor_enemy;
 
-    private Texture2D currentCursor;
+    private Vector2 dragSelectFrom = Vector2.zero;
+    private Vector2 curMousePos = Vector2.zero;
+    [SerializeField]
+    private RectTransform selectionBox;
+    private HashSet<Unit> selectionBoxUnits = new HashSet<Unit>();
+
     private bool attackMode = false;
     private bool cancelOtherOrders = false;
-    private Vector3 boxingStartPos = Vector3.zero;
-    private Vector3 mousePos = Vector3.zero;
+    private Vector3 mouseObjectPos = Vector3.zero;
     private GameObject mouseObject = null;
 
-    private List<Unit> selectedUnits = new List<Unit>();
+    private HashSet<Unit> selectableUnits = new HashSet<Unit>();
+    private HashSet<Unit> selectedUnits = new HashSet<Unit>();
 
     void Awake()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        selectionBox = transform.Find("Canvas").Find("SelectionBox").GetComponent<RectTransform>();
         Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start()
     {
-        foreach (var gameObject in GameObject.FindGameObjectsWithTag("ally"))
-        {
-            Unit unit = gameObject.GetComponent<Unit>();
-            selectedUnits.Add(unit);
-            unit.SetSelection(true);
-        }
+        var allyObjects = GameObject.FindGameObjectsWithTag("ally");
+        foreach (var allyObject in allyObjects)
+            if (allyObject.GetComponent<Unit>() != null)
+                selectableUnits.Add(allyObject.GetComponent<Unit>());
     }
 
     void Update()
@@ -55,9 +62,9 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             processMouseLeftDown();
-        if (Input.GetKeyUp(KeyCode.Mouse0))
+        else if (Input.GetKeyUp(KeyCode.Mouse0))
             processMouseLeftUp();
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        else if (Input.GetKeyDown(KeyCode.Mouse1))
             processMouseRightDown();
         else
             processMouseHovering();
@@ -82,27 +89,40 @@ public class UnitController : MonoBehaviour
             selectedUnits.Clear();
         }
 
-        boxingStartPos = mousePos;
+        dragSelectFrom = curMousePos;
+        setMouseCursor(cursor_default);
     }
 
     void processMouseLeftUp()
     {
-        if (boxingStartPos != Vector3.zero)
-        {
-            // process boxing select
-            boxingStartPos = Vector3.zero;
-        }
-
-        if (isCursorOnAlly())
+        if (dragSelectFrom == curMousePos && isCursorOnAlly())
         {
             Unit selectUnit = mouseObject.GetComponent<Unit>();
-            selectedUnits.Add(selectUnit);
-            selectUnit.SetSelection(true);
+            if (!selectedUnits.Contains(selectUnit))
+            {
+                selectedUnits.Add(selectUnit);
+                selectUnit.SetSelection(true);
+            }
+            else if (Input.GetKey(KeyCode.LeftShift))
+            {
+                selectedUnits.Remove(selectUnit);
+                selectUnit.SetSelection(false);
+            }
         }
+        else if (dragSelectFrom != Vector2.zero)
+            completeBoxingSelect();
+
+        dragSelectFrom = Vector2.zero;
     }
 
     void processMouseRightDown()
     {
+        if (dragSelectFrom != Vector2.zero)
+        {
+            cancelBoxingSelect();
+            return;
+        }
+
         if (attackMode)
         {
             attackMode = false;
@@ -122,6 +142,12 @@ public class UnitController : MonoBehaviour
 
     void processMouseHovering()
     {
+        if (dragSelectFrom != Vector2.zero)
+        {
+            processBoxingSelect();
+            return;
+        }
+
         if (attackMode)
             return;
 
@@ -146,12 +172,14 @@ public class UnitController : MonoBehaviour
 
     void checkMousePos()
     {
+        curMousePos = Input.mousePosition;
+
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit raycastHit;
         if (!Physics.Raycast(ray, out raycastHit))
             return;
 
-        mousePos = raycastHit.point;
+        mouseObjectPos = raycastHit.point;
         if (raycastHit.collider != null)
             mouseObject = raycastHit.collider.gameObject;
         else
@@ -180,7 +208,7 @@ public class UnitController : MonoBehaviour
 
         foreach (var unit in selectedUnits)
         {
-            Vector3 destination = mousePos + (unit.transform.position - center);
+            Vector3 destination = mouseObjectPos + (unit.transform.position - center);
             unit.GiveOrder(new AttackGround(destination), cancelOtherOrders);
         }
     }
@@ -191,7 +219,7 @@ public class UnitController : MonoBehaviour
 
         foreach (var unit in selectedUnits)
         {
-            Vector3 destination = mousePos + unit.transform.position - center;
+            Vector3 destination = mouseObjectPos + unit.transform.position - center;
             unit.GiveOrder(new Move(destination), cancelOtherOrders);
         }
     }
@@ -212,5 +240,66 @@ public class UnitController : MonoBehaviour
             total += unit.transform.position;
 
         return total / selectedUnits.Count;
+    }
+
+    void processBoxingSelect()
+    {
+        if (dragSelectFrom == curMousePos)
+            return;
+
+        // draw selection box
+        float width = curMousePos.x - dragSelectFrom.x;
+        float height = curMousePos.y - dragSelectFrom.y;
+
+        Vector2 newAnchoredPosition = dragSelectFrom + new Vector2(width / 2, height / 2);
+        if (newAnchoredPosition == selectionBox.anchoredPosition)
+            return;
+
+        selectionBox.anchoredPosition = newAnchoredPosition;
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
+
+        // check boxing units
+        Bounds bounds = new Bounds(selectionBox.anchoredPosition, selectionBox.sizeDelta);
+        HashSet<Unit> newBoxingUnits = new HashSet<Unit>();
+
+        foreach (var unit in selectableUnits)
+        {
+            Vector2 unitScreenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
+            if (bounds.Contains(unitScreenPos))
+                newBoxingUnits.Add(unit);
+        }
+
+        foreach (Unit unit in selectionBoxUnits)
+            if (!newBoxingUnits.Contains(unit))
+            {
+                unit.SetSelection(false);
+                selectionBoxUnits.Remove(unit);
+            }
+
+        foreach (Unit unit in newBoxingUnits)
+            if (!selectionBoxUnits.Contains(unit))
+            {
+                unit.SetSelection(true);
+                selectionBoxUnits.Add(unit);
+            }
+    }
+
+    void completeBoxingSelect()
+    {
+        foreach (Unit unit in selectionBoxUnits)
+            selectedUnits.Add(unit);
+
+        selectionBoxUnits.Clear();
+        selectionBox.sizeDelta = Vector2.zero;
+    }
+
+    void cancelBoxingSelect()
+    {
+        foreach (Unit unit in selectionBoxUnits)
+            if (!selectedUnits.Contains(unit))
+                unit.SetSelection(false);
+
+        selectionBoxUnits.Clear();
+        selectionBox.sizeDelta = Vector2.zero;
     }
 }
