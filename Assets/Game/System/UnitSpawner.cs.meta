@@ -3,7 +3,9 @@ guid: 71843c32def1b6b4fbd6bebc739c89b2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - swordsmanPrefab: {fileID: 6516799984629776144, guid: 732f7db735d6a3d47b3efa1acfd9672f, type: 3}
+  - swordsmanData: {fileID: 11400000, guid: 0d3dd4b5492b7854e8deadb050300653, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

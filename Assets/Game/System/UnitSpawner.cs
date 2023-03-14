@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArmyDeploy : MonoBehaviour
+public class UnitSpawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject swordsmanPrefab;

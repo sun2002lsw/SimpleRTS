@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
-    private List<Order> orders = new List<Order>();
+    private Queue<Order> orders = new Queue<Order>();
 
     public void SetSelection(bool selected)
     {
@@ -28,7 +28,7 @@ public class Unit : MonoBehaviour
         if (cancelOtherOrders)
             orders.Clear();
 
-        orders.Add(order);
+        orders.Enqueue(order);
     }
 
     void Awake()
@@ -55,12 +55,12 @@ public class Unit : MonoBehaviour
     void executeOrder()
     {
         if (orders.Count == 0)
-            orders.Add(new Stop(transform.position));
+            orders.Enqueue(new Stop(transform.position));
 
-        Order curOrder = orders[0];
+        Order curOrder = orders.Peek();
         IsComplete complete = curOrder.ControllUnit(this);
         if (complete)
-            orders.Remove(curOrder);
+            orders.Dequeue();
     }
 
     public IsComplete MoveToDestination(Vector3 destination)
