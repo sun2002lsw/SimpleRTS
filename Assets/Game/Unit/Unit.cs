@@ -13,10 +13,22 @@ public class Unit : MonoBehaviour
         set { unitData = value; } 
     }
 
+    private Unit nearestEnemy = null;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
     private Queue<Order> orders = new Queue<Order>();
+
+    public Vector3 Position 
+    { 
+        get { return transform.position; }
+        private set { transform.position = value; } 
+    }
+
+    public void SetNearestEnemy(Unit enemy)
+    {
+        nearestEnemy = enemy;
+    }
 
     public void SetSelection(bool selected)
     {
