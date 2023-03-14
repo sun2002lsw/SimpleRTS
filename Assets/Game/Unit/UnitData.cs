@@ -18,4 +18,12 @@ public class UnitData : ScriptableObject
     [SerializeField]
     private float attackRange;
     public float AttackRange { get { return attackRange; } }
+
+    [SerializeField]
+    private float rotationSpeed;
+    public float RotationSpeed { get { return rotationSpeed; } }
+
+    [SerializeField]
+    private float movementSpeed;
+    public float MovementSpeed { get { return movementSpeed; } }
 }

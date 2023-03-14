@@ -57,6 +57,9 @@ public class Unit : MonoBehaviour
             Debug.LogAssertionFormat("Invalid unitData object detected: {0}", transform.position);
             Destroy(gameObject);
         }
+
+        navMeshAgent.speed = unitData.MovementSpeed;
+        navMeshAgent.angularSpeed = 180 * unitData.RotationSpeed;
     }
 
     void Update()
@@ -75,7 +78,7 @@ public class Unit : MonoBehaviour
             orders.Dequeue();
     }
 
-    public IsComplete MoveToDestination(Vector3 destination)
+    public IsComplete MoveTo(Vector3 destination)
     {
         if (navMeshAgent.destination != destination)
             navMeshAgent.SetDestination(destination);

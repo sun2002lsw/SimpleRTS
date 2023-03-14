@@ -16,6 +16,6 @@ public class Move : Order
 
     public bool ControllUnit(Unit unit)
     {
-        return unit.MoveToDestination(destination);
+        return unit.MoveTo(destination);
     }
 }

@@ -41,10 +41,8 @@ public class UnitSpawner : MonoBehaviour
     GameObject spawnUnit(GameObject obj, UnitData data, Vector3 pos)
     {
         GameObject instance = Instantiate(obj);
+        instance.GetComponent<Unit>().UnitData = data;
         instance.transform.position = pos;
-
-        Unit unit = instance.GetComponent<Unit>();
-        unit.UnitData = data;
 
         lookCenterLine(ref instance);
         setTagByPosition(ref instance);
