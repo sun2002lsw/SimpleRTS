@@ -12,6 +12,8 @@ public class UnitManager : MonoBehaviour
             allyUnits.Add(gameObject.GetComponent<Unit>());
         foreach (var gameObject in GameObject.FindGameObjectsWithTag("enemy"))
             enemyUnits.Add(gameObject.GetComponent<Unit>());
+
+        CalculateNearestEnemy();
     }
 
     void Update()
@@ -21,33 +23,45 @@ public class UnitManager : MonoBehaviour
 
     void CalculateNearestEnemy()
     {
-        foreach (var allySoldier in allyUnits)
+        foreach (Unit allyUnit in allyUnits)
         {
             float shortestDistance = float.MaxValue;
             Unit nearestEnemy = null;
 
-            foreach (var enemySoldier in enemyUnits)
+            foreach (Unit enemyUnit in enemyUnits)
             {
-                float distance = unitDistance(allySoldier, enemySoldier);
+                float distance = unitDistance(allyUnit, enemyUnit);
                 if (distance < shortestDistance)
                 {
                     shortestDistance = distance;
-                    nearestEnemy = enemySoldier;
+                    nearestEnemy = enemyUnit;
                 }
             }
 
-            setNearestEnemy(allySoldier, nearestEnemy);
+            allyUnit.NearestEnemy = nearestEnemy;
+        }
+
+        foreach (Unit enemyUnit in enemyUnits)
+        {
+            float shortestDistance = float.MaxValue;
+            Unit nearestEnemy = null;
+
+            foreach (Unit allyUnit in allyUnits)
+            {
+                float distance = unitDistance(enemyUnit, allyUnit);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    nearestEnemy = allyUnit;
+                }
+            }
+
+            enemyUnit.NearestEnemy = nearestEnemy;
         }
     }
 
-    float unitDistance(Unit s1, Unit s2)
+    float unitDistance(Unit u1, Unit u2)
     {
-        return Vector3.Distance(s1.Position, s2.Position);
-    }
-
-    void setNearestEnemy(Unit s1, Unit s2)
-    {
-        s1.SetNearestEnemy(s2);
-        s2.SetNearestEnemy(s1);
+        return Vector3.Distance(u1.Position, u2.Position);
     }
 }

@@ -13,21 +13,29 @@ public class Unit : MonoBehaviour
         set { unitData = value; } 
     }
 
-    private Unit nearestEnemy = null;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
     private Queue<Order> orders = new Queue<Order>();
 
-    public Vector3 Position 
+    public Vector3 Position
     { 
         get { return transform.position; }
         private set { transform.position = value; } 
     }
 
-    public void SetNearestEnemy(Unit enemy)
+    public Unit NearestEnemy { get; set; }
+
+    public Unit DetectedEnemy
     {
-        nearestEnemy = enemy;
+        get 
+        {
+            if (NearestEnemy != null && Vector3.Distance(NearestEnemy.Position, Position) < UnitData.DetectRange)
+                return NearestEnemy;
+            else
+                return null;
+        }
+        private set { }
     }
 
     public void SetSelection(bool selected)
@@ -76,6 +84,17 @@ public class Unit : MonoBehaviour
         IsComplete complete = curOrder.ControllUnit(this);
         if (complete)
             orders.Dequeue();
+    }
+    public IsComplete RotateTo(Vector3 destination)
+    {
+        Vector3 direction = destination - transform.position;
+        if (Vector3.Angle(transform.forward, direction) < 10)
+            return true;
+
+        float maxRadiansDelta = Mathf.PI * unitData.RotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, maxRadiansDelta, 0);
+        transform.rotation = Quaternion.LookRotation(newDirection);
+        return false;
     }
 
     public IsComplete MoveTo(Vector3 destination)
