@@ -15,6 +15,8 @@ MonoBehaviour:
   unitName: swordsman
   maxHP: 100
   damage: 10
+  damageDelay: 0.3
+  attackDelay: 2
   attackRange: 1.5
   detectRange: 30
   rotationSpeed: 3

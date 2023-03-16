@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,17 +8,15 @@ using IsComplete = System.Boolean;
 
 public class Unit : MonoBehaviour
 {
-    private UnitData unitData = null;
-    public UnitData UnitData 
-    { 
-        get { return unitData; } 
-        set { unitData = value; } 
-    }
+    public UnitData UnitData { get; set; }
+
+    private DateTime lastAttackTime;
+    private float hp;
+    private Queue<Order> orders = new Queue<Order>();
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
-    private Queue<Order> orders = new Queue<Order>();
 
     public Vector3 Position
     { 
@@ -60,14 +60,17 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
-        if (unitData == null)
+        if (UnitData == null)
         {
             Debug.LogAssertionFormat("Invalid unitData object detected: {0}", transform.position);
             Destroy(gameObject);
         }
 
-        navMeshAgent.speed = unitData.MovementSpeed;
-        navMeshAgent.angularSpeed = 180 * unitData.RotationSpeed;
+        hp = UnitData.MaxHP;
+        lastAttackTime = DateTime.MinValue;
+
+        navMeshAgent.speed = UnitData.MovementSpeed;
+        navMeshAgent.angularSpeed = 180 * UnitData.RotationSpeed;
     }
 
     void Update()
@@ -84,17 +87,6 @@ public class Unit : MonoBehaviour
         IsComplete complete = curOrder.ControllUnit(this);
         if (complete)
             orders.Dequeue();
-    }
-    public IsComplete RotateTo(Vector3 destination)
-    {
-        Vector3 direction = destination - transform.position;
-        if (Vector3.Angle(transform.forward, direction) < 10)
-            return true;
-
-        float maxRadiansDelta = Mathf.PI * unitData.RotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, maxRadiansDelta, 0);
-        transform.rotation = Quaternion.LookRotation(newDirection);
-        return false;
     }
 
     public IsComplete MoveTo(Vector3 destination)
@@ -114,6 +106,59 @@ public class Unit : MonoBehaviour
             animator.SetBool("isMoving", false);
 
         return false;
+    }
+
+    public IsComplete RotateTo(Vector3 destination)
+    {
+        Vector3 direction = destination - transform.position;
+        if (Vector3.Angle(transform.forward, direction) < 10)
+            return true;
+
+        float maxRadiansDelta = Mathf.PI * UnitData.RotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, maxRadiansDelta, 0);
+        transform.rotation = Quaternion.LookRotation(newDirection);
+        return false;
+    }
+
+    public IsComplete AttackUnit(Unit target)
+    {
+        // Á×¾úÀ¸¸é true
+
+        // approach
+        bool canAttackTarget = Vector3.Distance(Position, target.Position) < UnitData.AttackRange;
+        if (!canAttackTarget)
+        {
+            MoveTo(target.Position);
+            return false;
+        }
+
+        // stop
+        if (navMeshAgent.destination != Position)
+        {
+            navMeshAgent.SetDestination(Position);
+            animator.SetBool("isMoving", false);
+        }
+
+        // face the target
+        if (!RotateTo(target.Position))
+            return false;
+
+        // attack
+        DateTime nextAttackTime = lastAttackTime.AddSeconds(UnitData.AttackDelay);
+        if (nextAttackTime > DateTime.Now)
+            return false;
+
+        lastAttackTime = DateTime.Now;
+        animator.SetTrigger("attack");
+        StartCoroutine(giveDamage(target));
+        return false;
+    }
+
+    IEnumerator giveDamage(Unit target)
+    {
+        yield return new WaitForSeconds(UnitData.DamageDelay);
+
+        Debug.Log("attack");
     }
 
     private bool arrivedAtDestination()

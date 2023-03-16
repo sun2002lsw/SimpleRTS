@@ -8,12 +8,20 @@ public class UnitData : ScriptableObject
     public string UnitName { get { return unitName; } }
 
     [SerializeField]
-    private string maxHP;
-    public string MaxHP { get { return maxHP; } }
+    private float maxHP;
+    public float MaxHP { get { return maxHP; } }
 
     [SerializeField]
     private float damage;
     public float Damage { get { return damage; } }
+
+    [SerializeField]
+    private float damageDelay;
+    public float DamageDelay { get { return damageDelay; } }
+
+    [SerializeField]
+    private float attackDelay;
+    public float AttackDelay { get { return attackDelay; } }
 
     [SerializeField]
     private float attackRange;
