@@ -50,6 +50,11 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
+        processInputs();
+    }
+
+    void processInputs()
+    {
         if (Input.GetKeyDown(KeyCode.A))
         {
             attackMode = true;

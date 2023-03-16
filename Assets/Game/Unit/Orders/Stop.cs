@@ -16,6 +16,10 @@ public class Stop : Order
 
     public bool ControllUnit(Unit unit)
     {
-        return true;
+        if (unit.DetectedEnemy == null)
+            return true;
+
+        // todo æÓ≈√∂•
+        return unit.RotateTo(unit.DetectedEnemy.Position);
     }
 }

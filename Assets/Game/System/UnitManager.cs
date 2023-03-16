@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    List<Unit> allyUnits = new List<Unit>();
-    List<Unit> enemyUnits = new List<Unit>();
+    HashSet<Unit> allyUnits = new HashSet<Unit>();
+    HashSet<Unit> enemyUnits = new HashSet<Unit>();
 
     void Start()
     {
@@ -13,15 +13,15 @@ public class UnitManager : MonoBehaviour
         foreach (var gameObject in GameObject.FindGameObjectsWithTag("enemy"))
             enemyUnits.Add(gameObject.GetComponent<Unit>());
 
-        CalculateNearestEnemy();
+        calculateNearestEnemy();
     }
 
     void Update()
     {
-        CalculateNearestEnemy();
+        calculateNearestEnemy();
     }
 
-    void CalculateNearestEnemy()
+    void calculateNearestEnemy()
     {
         foreach (Unit allyUnit in allyUnits)
         {
