@@ -16,6 +16,9 @@ public class AttackGround : Order
 
     public bool ControllUnit(Unit unit)
     {
-        return true;
+        if (unit.DetectedEnemy == null)
+            return unit.MoveTo(destination);
+        else
+            return unit.AttackUnit(unit.DetectedEnemy);
     }
 }

@@ -14,9 +14,6 @@ public class AttackUnit : Order
 
     public bool ControllUnit(Unit unit)
     {
-        if (target == null)
-            return true;
-
         return unit.AttackUnit(target);
     }
 }

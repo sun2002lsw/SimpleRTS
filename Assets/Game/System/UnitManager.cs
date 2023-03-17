@@ -76,6 +76,6 @@ public class UnitManager : MonoBehaviour
 
     float unitDistance(Unit u1, Unit u2)
     {
-        return Vector3.Distance(u1.Position, u2.Position);
+        return Vector3.Distance(u1.CurPosition, u2.CurPosition);
     }
 }

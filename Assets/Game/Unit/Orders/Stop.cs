@@ -20,6 +20,6 @@ public class Stop : Order
             return true;
 
         // todo æÓ≈√∂•
-        return unit.RotateTo(unit.DetectedEnemy.Position);
+        return unit.RotateTo(unit.DetectedEnemy.CurPosition);
     }
 }

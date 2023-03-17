@@ -18,7 +18,7 @@ public class Unit : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
 
-    public Vector3 Position
+    public Vector3 CurPosition
     { 
         get { return transform.position; }
         private set { transform.position = value; } 
@@ -30,7 +30,7 @@ public class Unit : MonoBehaviour
     {
         get 
         {
-            if (NearestEnemy != null && Vector3.Distance(NearestEnemy.Position, Position) < UnitData.DetectRange)
+            if (NearestEnemy != null && Vector3.Distance(NearestEnemy.CurPosition, CurPosition) < UnitData.DetectRange)
                 return NearestEnemy;
             else
                 return null;
@@ -62,7 +62,7 @@ public class Unit : MonoBehaviour
     {
         if (UnitData == null)
         {
-            Debug.LogAssertionFormat("Invalid unitData object detected: {0}", transform.position);
+            Debug.LogAssertionFormat("Invalid unitData object detected: {0}", CurPosition);
             Destroy(gameObject);
         }
 
@@ -84,7 +84,7 @@ public class Unit : MonoBehaviour
     void executeOrder()
     {
         if (orders.Count == 0)
-            orders.Enqueue(new Stop(transform.position));
+            orders.Enqueue(new Stop(CurPosition));
 
         Order curOrder = orders.Peek();
         IsComplete complete = curOrder.ControllUnit(this);
@@ -98,7 +98,7 @@ public class Unit : MonoBehaviour
             navMeshAgent.SetDestination(destination);
 
         // arrived at destination
-        if (Vector3.Distance(transform.position, navMeshAgent.destination) < 1)
+        if (Vector3.Distance(CurPosition, navMeshAgent.destination) < 1)
         {
             animator.SetBool("isMoving", false);
             return true;
@@ -114,7 +114,7 @@ public class Unit : MonoBehaviour
 
     public IsComplete RotateTo(Vector3 destination)
     {
-        Vector3 direction = destination - transform.position;
+        Vector3 direction = destination - CurPosition;
         if (Vector3.Angle(transform.forward, direction) < 10)
             return true;
 
@@ -131,22 +131,22 @@ public class Unit : MonoBehaviour
             return true;
 
         // approach
-        bool canAttackTarget = Vector3.Distance(Position, target.Position) < UnitData.AttackRange;
+        bool canAttackTarget = Vector3.Distance(CurPosition, target.CurPosition) < UnitData.AttackRange;
         if (!canAttackTarget)
         {
-            MoveTo(target.Position);
+            MoveTo(target.CurPosition);
             return false;
         }
 
         // stop
-        if (navMeshAgent.destination != Position)
+        if (navMeshAgent.destination != CurPosition)
         {
-            navMeshAgent.SetDestination(Position);
+            navMeshAgent.SetDestination(CurPosition);
             animator.SetBool("isMoving", false);
         }
 
         // face the target
-        if (!RotateTo(target.Position))
+        if (!RotateTo(target.CurPosition))
             return false;
 
         // attack
