@@ -18,6 +18,6 @@ MonoBehaviour:
   damageDelay: 0.3
   attackDelay: 2
   attackRange: 1.5
-  detectRange: 30
+  detectRange: 10
   rotationSpeed: 3
   movementSpeed: 5
