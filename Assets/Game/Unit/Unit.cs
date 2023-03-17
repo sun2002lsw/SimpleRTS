@@ -75,6 +75,9 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
+        if (hp <= 0)
+            return; // do nothing;
+
         executeOrder();
     }
 
@@ -94,7 +97,8 @@ public class Unit : MonoBehaviour
         if (navMeshAgent.destination != destination)
             navMeshAgent.SetDestination(destination);
 
-        if (arrivedAtDestination())
+        // arrived at destination
+        if (Vector3.Distance(transform.position, navMeshAgent.destination) < 1)
         {
             animator.SetBool("isMoving", false);
             return true;
@@ -122,7 +126,9 @@ public class Unit : MonoBehaviour
 
     public IsComplete AttackUnit(Unit target)
     {
-        // Á×¾úÀ¸¸é true
+        // already dead
+        if (target.hp <= 0)
+            return true;
 
         // approach
         bool canAttackTarget = Vector3.Distance(Position, target.Position) < UnitData.AttackRange;
@@ -158,11 +164,27 @@ public class Unit : MonoBehaviour
     {
         yield return new WaitForSeconds(UnitData.DamageDelay);
 
-        Debug.Log("attack");
+        target.TakeDamage(UnitData.Damage);
     }
 
-    private bool arrivedAtDestination()
+    public void TakeDamage(float damage)
     {
-        return Vector3.Distance(transform.position, navMeshAgent.destination) < 1;
+        hp -= damage;
+        if (hp <= 0)
+        {
+            processDeath();
+            return;
+        }
+
+        animator.SetTrigger("takeDamage");
+    }
+
+    void processDeath()
+    {
+        orders.Clear();
+        Destroy(GetComponent<NavMeshAgent>());
+
+        int deathAnimationIdx = UnityEngine.Random.Range(1, 3);
+        animator.SetTrigger("death" + deathAnimationIdx);
     }
 }
