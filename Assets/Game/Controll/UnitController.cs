@@ -36,11 +36,15 @@ public class UnitController : MonoBehaviour
 
     private HashSet<Unit> selectableUnits = new HashSet<Unit>();
     private HashSet<Unit> selectedUnits = new HashSet<Unit>();
+    private Dictionary<KeyCode, HashSet<Unit>> numberingUnits = new Dictionary<KeyCode, HashSet<Unit>>();
 
     public void DeleteUnit(Unit unit)
     {
         selectableUnits.Remove(unit);
         selectedUnits.Remove(unit);
+
+        foreach (var numberingUnit in numberingUnits)
+            numberingUnit.Value.Remove(unit);
     }
 
     void Awake()
@@ -98,6 +102,40 @@ public class UnitController : MonoBehaviour
             orderSelectedUnitsWithSound(unit => new Provoke());
             return;
         }
+
+        processNumberingInput();
+    }
+
+    void processNumberingInput()
+    {
+        KeyCode numberKey;
+        if (!isNumberKeyDown(out numberKey))
+            return;
+
+        // save numbering units
+        if (Input.GetKey(KeyCode.B)) // todo. change to LeftCtrl on build version
+        {
+            numberingUnits[numberKey] = new HashSet<Unit>(selectedUnits);
+            return;
+        }
+
+        // load numbering units
+        if (!numberingUnits.ContainsKey(numberKey))
+            return;
+        if (numberingUnits[numberKey].Count == 0)
+            return;
+        if (numberingUnits[numberKey] == selectableUnits)
+            return;
+
+        foreach (Unit unit in selectedUnits)
+            unit.SetSelection(false);
+
+        selectedUnits = new HashSet<Unit>(numberingUnits[numberKey]);
+        foreach (Unit unit in selectedUnits)
+            unit.SetSelection(true);
+
+        if (selectedUnits.Count > 0)
+            selectedUnits.First<Unit>().PlaySelectionVoice(audioSource);
     }
 
     void processMouseInput()
@@ -320,12 +358,8 @@ public class UnitController : MonoBehaviour
         }
 
         // extracted units
-        HashSet<Unit> extractedUnits = new HashSet<Unit>();
-        foreach (Unit unit in selectionBoxUnits)
-            if (!newBoxingUnits.Contains(unit))
-                extractedUnits.Add(unit);
-
-        foreach (Unit unit in extractedUnits)
+        var extractedUnits = selectionBoxUnits.Where(unit => !newBoxingUnits.Contains(unit));
+        foreach (Unit unit in new HashSet<Unit>(extractedUnits))
             if (!selectedUnits.Contains(unit))
             {
                 unit.SetSelection(false);
@@ -361,5 +395,19 @@ public class UnitController : MonoBehaviour
 
         selectionBoxUnits.Clear();
         selectionBox.sizeDelta = Vector2.zero;
+    }
+
+    bool isNumberKeyDown(out KeyCode key)
+    {
+        KeyCode number = KeyCode.Alpha0;
+        for (int i = 0; i < 10; i++)
+            if (Input.GetKeyDown(number + i))
+            {
+                key = number + i;
+                return true;
+            }
+
+        key = default;
+        return false;
     }
 }
