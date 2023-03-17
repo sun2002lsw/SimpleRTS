@@ -64,10 +64,13 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        processInputs();
+        cancelOtherOrders = !Input.GetKey(KeyCode.LeftShift);
+
+        processKeyboardInput();
+        processMouseInput();
     }
 
-    void processInputs()
+    void processKeyboardInput()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -76,8 +79,24 @@ public class UnitController : MonoBehaviour
             return;
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            foreach (var unit in selectedUnits)
+                unit.GiveOrder(new Stop(unit.CurPosition), cancelOtherOrders);
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            foreach (var unit in selectedUnits)
+                unit.GiveOrder(new Hold(), cancelOtherOrders);
+            return;
+        }
+    }
+
+    void processMouseInput()
+    {
         checkMousePos();
-        cancelOtherOrders = !Input.GetKey(KeyCode.LeftShift);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             processMouseLeftDown();

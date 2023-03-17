@@ -152,6 +152,13 @@ public class Unit : MonoBehaviour
 
     public void DefendPosition()
     {
+        // stop
+        if (navMeshAgent.destination != CurPosition)
+        {
+            navMeshAgent.SetDestination(CurPosition);
+            animator.SetBool("isMoving", false);
+        }
+
         if (DetectedEnemy == null)
             return;
 
