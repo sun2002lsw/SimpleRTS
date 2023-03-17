@@ -25,16 +25,21 @@ public class UnitSound : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayAttackSound() { playOneRandomSound(attackSounds); }
-    public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds); }
-    public void PlaySelectVoiceSound() { playOneRandomSound(selectVoiceSounds); }
-    public void PlayMoveVoiceSound() { playOneRandomSound(moveVoiceSounds); }
-    public void PlayAttackVoiceSound() { playOneRandomSound(attackVoiceSounds); }
-    public void PlayPainVoiceSound() { playOneRandomSound(painVoiceSounds); }
-    public void PlayDeathVoiceSound() { playOneRandomSound(deathVoiceSounds); }
+    public void PlayAttackSound() { playOneRandomSound(attackSounds, false); }
+    public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds, false); }
+    public void PlaySelectVoiceSound() { playOneRandomSound(selectVoiceSounds, true); }
+    public void PlayMoveVoiceSound() { playOneRandomSound(moveVoiceSounds, true); }
+    public void PlayAttackVoiceSound() { playOneRandomSound(attackVoiceSounds, true); }
+    public void PlayPainVoiceSound() { playOneRandomSound(painVoiceSounds, false); }
+    public void PlayDeathVoiceSound() { playOneRandomSound(deathVoiceSounds, false); }
 
-    private void playOneRandomSound(List<AudioClip> sounds)
+    private void playOneRandomSound(List<AudioClip> sounds, bool isUIsound)
     {
+        if (isUIsound)
+            audioSource.spatialBlend = 0;
+        else
+            audioSource.spatialBlend = 1;
+
         int idx = Random.Range(0, sounds.Count);
         audioSource.clip = sounds[idx];
         audioSource.Play();
