@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour
     private Queue<Order> orders = new Queue<Order>();
 
     private Animator animator;
+    private AudioSource audioSource;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
 
@@ -54,6 +55,7 @@ public class Unit : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         spriteRenderer = transform.Find("SelectionUI").GetComponent<SpriteRenderer>();
     }
@@ -200,7 +202,10 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        animator.SetTrigger("takeDamage");
+        bool isIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
+        bool isHold = false;
+        if (isIdle || isHold)
+            animator.SetTrigger("takeDamage");
     }
 
     void processDeath()
@@ -218,7 +223,18 @@ public class Unit : MonoBehaviour
         else if (tag == "enemy")
             UnitManager.Instance.DeleteEnemyUnit(this);
 
-        int deathAnimationIdx = UnityEngine.Random.Range(1, 3);
+        int deathAnimationIdx = UnityEngine.Random.Range(1, 3); // 1 or 2
         animator.SetTrigger("death" + deathAnimationIdx);
+    }
+
+    // SOUND
+    [SerializeField]
+    private List<AudioClip> attackSounds;
+
+    public void PlayAttackSound()
+    {
+        int attackSoundIdx = UnityEngine.Random.Range(0, attackSounds.Count);
+        audioSource.clip = attackSounds[attackSoundIdx];
+        audioSource.Play();
     }
 }

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SwordsmanData
   m_EditorClassIdentifier: 
   unitName: swordsman
-  maxHP: 30
+  maxHP: 50
   damage: 10
-  damageDelay: 0.3
+  damageDelay: 0.8
   attackDelay: 2
   attackRange: 1.5
   detectRange: 10
