@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class Stop : Order
@@ -16,10 +17,6 @@ public class Stop : Order
 
     public bool ControllUnit(Unit unit)
     {
-        if (unit.DetectedEnemy == null)
-            return true;
-
-        // todo æÓ≈√∂•
-        return unit.RotateTo(unit.DetectedEnemy.CurPosition);
+        return true;
     }
 }

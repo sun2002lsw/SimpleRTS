@@ -112,18 +112,6 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    public IsComplete RotateTo(Vector3 destination)
-    {
-        Vector3 direction = destination - CurPosition;
-        if (Vector3.Angle(transform.forward, direction) < 10)
-            return true;
-
-        float maxRadiansDelta = Mathf.PI * UnitData.RotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, maxRadiansDelta, 0);
-        transform.rotation = Quaternion.LookRotation(newDirection);
-        return false;
-    }
-
     public IsComplete AttackUnit(Unit target)
     {
         // already dead
@@ -146,7 +134,7 @@ public class Unit : MonoBehaviour
         }
 
         // face the target
-        if (!RotateTo(target.CurPosition))
+        if (!rotateTo(target.CurPosition))
             return false;
 
         // attack
@@ -160,14 +148,50 @@ public class Unit : MonoBehaviour
         return false;
     }
 
+    public void DefendPosition()
+    {
+        if (DetectedEnemy == null)
+            return;
+
+        // face the target
+        if (!rotateTo(DetectedEnemy.CurPosition))
+            return;
+
+        // wait for range
+        bool canAttackTarget = Vector3.Distance(CurPosition, DetectedEnemy.CurPosition) < UnitData.AttackRange;
+        if (!canAttackTarget)
+            return;
+
+        // attack
+        DateTime nextAttackTime = lastAttackTime.AddSeconds(UnitData.AttackDelay);
+        if (nextAttackTime > DateTime.Now)
+            return;
+
+        lastAttackTime = DateTime.Now;
+        animator.SetTrigger("attack");
+        StartCoroutine(giveDamage(DetectedEnemy));
+    }
+
+    IsComplete rotateTo(Vector3 destination)
+    {
+        Vector3 direction = destination - CurPosition;
+        if (Vector3.Angle(transform.forward, direction) < 10)
+            return true;
+
+        float maxRadiansDelta = Mathf.PI * UnitData.RotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, maxRadiansDelta, 0);
+        transform.rotation = Quaternion.LookRotation(newDirection);
+        return false;
+    }
+
     IEnumerator giveDamage(Unit target)
     {
         yield return new WaitForSeconds(UnitData.DamageDelay);
 
-        target.TakeDamage(UnitData.Damage);
+        target.takeDamage(UnitData.Damage);
     }
 
-    public void TakeDamage(float damage)
+    void takeDamage(float damage)
     {
         hp -= damage;
         if (hp <= 0)
