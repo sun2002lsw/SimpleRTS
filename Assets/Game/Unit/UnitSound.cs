@@ -7,6 +7,8 @@ public class UnitSound : MonoBehaviour
     private AudioSource unitAudioSource;
 
     [SerializeField]
+    private List<AudioClip> roarSounds;
+    [SerializeField]
     private List<AudioClip> attackSounds;
     [SerializeField]
     private List<AudioClip> takeDamageSounds;
@@ -30,6 +32,7 @@ public class UnitSound : MonoBehaviour
         unitAudioSource = GetComponent<AudioSource>();
     }
 
+    public void PlayRoarSound() { playOneRandomSound(roarSounds, null); }
     public void PlayAttackSound() { playOneRandomSound(attackSounds, null); }
     public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds, null); }
     public void PlaySelectVoiceSound(AudioSource system) { playOneRandomSound(selectVoiceSounds, system); }

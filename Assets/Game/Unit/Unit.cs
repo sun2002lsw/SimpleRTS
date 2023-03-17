@@ -39,6 +39,7 @@ public class Unit : MonoBehaviour
         private set { }
     }
 
+    public void Roar() { unitAnimation.Roar(); }
     public void SetSelection(bool selected) { spriteRenderer.enabled = selected; }
     public void PlaySelectionVoice(AudioSource system) { unitSound.PlaySelectVoiceSound(system); }
     public void PlayOrderSound(Order order, AudioSource system) { order.PlayOrderSound(unitSound, system); }

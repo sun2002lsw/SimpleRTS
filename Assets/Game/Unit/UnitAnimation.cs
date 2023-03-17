@@ -6,6 +6,8 @@ public class UnitAnimation : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navMeshAgent;
 
+    public void Roar() { animator.SetTrigger("roar"); }
+
     void Awake()
     {
         animator = GetComponent<Animator>();

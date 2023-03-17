@@ -4367,6 +4367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f508f9669c88542ae87940dc48e31b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roarSounds:
+  - {fileID: 8300000, guid: e7a9ed05bbe6fbe4ab99bcea3775dc3d, type: 3}
+  - {fileID: 8300000, guid: be14f823df5f52640a3eeeabcf7bbe82, type: 3}
+  - {fileID: 8300000, guid: dfaf091f792d5fc4aa84918d5a5fbf3d, type: 3}
   attackSounds:
   - {fileID: 8300000, guid: c4e18fe68c7a6364e910e52010d5a6e3, type: 3}
   - {fileID: 8300000, guid: 4e9e2ff8fae85ce47befab3f088ca9ba, type: 3}
