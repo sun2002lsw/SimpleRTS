@@ -206,7 +206,9 @@ public class Unit : MonoBehaviour
     void processDeath()
     {
         orders.Clear();
+        SetSelection(false);
         Destroy(GetComponent<NavMeshAgent>());
+        Destroy(GetComponent<CapsuleCollider>());
 
         if (tag == "ally")
         {

@@ -17,6 +17,9 @@ public class Stop : Order
 
     public bool ControllUnit(Unit unit)
     {
-        return true;
+        if (unit.DetectedEnemy == null)
+            return unit.MoveTo(originPosition);
+        else
+            return unit.AttackUnit(unit.DetectedEnemy);
     }
 }
