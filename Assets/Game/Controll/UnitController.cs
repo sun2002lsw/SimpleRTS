@@ -92,6 +92,12 @@ public class UnitController : MonoBehaviour
             orderSelectedUnitsWithSound(unit => new Hold());
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.Slash))
+        {
+            orderSelectedUnitsWithSound(unit => new Provoke());
+            return;
+        }
     }
 
     void processMouseInput()

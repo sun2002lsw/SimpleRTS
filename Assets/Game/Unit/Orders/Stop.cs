@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using UnityEngine;
 
 public class Stop : Order
@@ -24,7 +23,8 @@ public class Stop : Order
     {
         if (unit.DetectedEnemy == null)
             return unit.MoveTo(originPosition);
-        else
-            return unit.AttackUnit(unit.DetectedEnemy);
+
+        unit.AttackUnit(unit.DetectedEnemy);
+        return false;
     }
 }
