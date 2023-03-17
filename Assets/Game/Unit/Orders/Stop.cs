@@ -15,9 +15,9 @@ public class Stop : Order
         return "Stop";
     }
 
-    public void PlayOrderSound(UnitSound unitSound)
+    public void PlayOrderSound(UnitSound unitSound, AudioSource system)
     {
-        unitSound.PlayStopVoiceSound();
+        unitSound.PlayStopVoiceSound(system);
     }
 
     public bool ControllUnit(Unit unit)

@@ -14,9 +14,9 @@ public class Move : Order
         return "Move";
     }
 
-    public void PlayOrderSound(UnitSound unitSound)
+    public void PlayOrderSound(UnitSound unitSound, AudioSource system)
     {
-        unitSound.PlayMoveVoiceSound();
+        unitSound.PlayMoveVoiceSound(system);
     }
 
     public bool ControllUnit(Unit unit)

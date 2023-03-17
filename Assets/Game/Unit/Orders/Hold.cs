@@ -7,9 +7,9 @@ public class Hold : Order
         return "Hold";
     }
 
-    public void PlayOrderSound(UnitSound unitSound)
+    public void PlayOrderSound(UnitSound unitSound, AudioSource system)
     {
-        unitSound.PlayHoldVoiceSound();
+        unitSound.PlayHoldVoiceSound(system);
     }
 
     public bool ControllUnit(Unit unit)

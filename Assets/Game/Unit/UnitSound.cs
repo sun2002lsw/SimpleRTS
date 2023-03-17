@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class UnitSound : MonoBehaviour
 {
-    private AudioSource audioSource;
+    private AudioSource unitAudioSource;
 
     [SerializeField]
     private List<AudioClip> attackSounds;
@@ -26,25 +27,26 @@ public class UnitSound : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        unitAudioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayAttackSound() { playOneRandomSound(attackSounds, false); }
-    public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds, false); }
-    public void PlaySelectVoiceSound() { playOneRandomSound(selectVoiceSounds, true); }
-    public void PlayStopVoiceSound() { playOneRandomSound(stopVoiceSounds, true); }
-    public void PlayHoldVoiceSound() { playOneRandomSound(holdVoiceSounds, true); }
-    public void PlayMoveVoiceSound() { playOneRandomSound(moveVoiceSounds, true); }
-    public void PlayAttackVoiceSound() { playOneRandomSound(attackVoiceSounds, true); }
-    public void PlayPainVoiceSound() { playOneRandomSound(painVoiceSounds, false); }
-    public void PlayDeathVoiceSound() { playOneRandomSound(deathVoiceSounds, false); }
+    public void PlayAttackSound() { playOneRandomSound(attackSounds, null); }
+    public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds, null); }
+    public void PlaySelectVoiceSound(AudioSource system) { playOneRandomSound(selectVoiceSounds, system); }
+    public void PlayStopVoiceSound(AudioSource system) { playOneRandomSound(stopVoiceSounds, system); }
+    public void PlayHoldVoiceSound(AudioSource system) { playOneRandomSound(holdVoiceSounds, system); }
+    public void PlayMoveVoiceSound(AudioSource system) { playOneRandomSound(moveVoiceSounds, system); }
+    public void PlayAttackVoiceSound(AudioSource system) { playOneRandomSound(attackVoiceSounds, system); }
+    public void PlayPainVoiceSound() { playOneRandomSound(painVoiceSounds, null); }
+    public void PlayDeathVoiceSound() { playOneRandomSound(deathVoiceSounds, null); }
 
-    private void playOneRandomSound(List<AudioClip> sounds, bool isUIsound)
+    private void playOneRandomSound(List<AudioClip> sounds, AudioSource systemAudioSoure)
     {
-        if (isUIsound)
-            audioSource.spatialBlend = 0;
+        AudioSource audioSource;
+        if (systemAudioSoure != null)
+            audioSource = systemAudioSoure;
         else
-            audioSource.spatialBlend = 1;
+            audioSource = unitAudioSource;
 
         int idx = Random.Range(0, sounds.Count);
         audioSource.clip = sounds[idx];

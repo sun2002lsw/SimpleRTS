@@ -40,9 +40,9 @@ public class Unit : MonoBehaviour
     }
 
     public void SetSelection(bool selected) { spriteRenderer.enabled = selected; }
-    public void PlaySelectionVoice() { unitSound.PlaySelectVoiceSound(); }
+    public void PlaySelectionVoice(AudioSource system) { unitSound.PlaySelectVoiceSound(system); }
+    public void PlayOrderSound(Order order, AudioSource system) { order.PlayOrderSound(unitSound, system); }
 
-    public void PlayOrderSound(Order order) { order.PlayOrderSound(unitSound); }
     public void GiveOrder(Order order, bool cancelOtherOrders)
     {
         if (cancelOtherOrders)
@@ -77,7 +77,7 @@ public class Unit : MonoBehaviour
     void Update()
     {
         if (hp <= 0)
-            return; // do nothing;
+            return; // do nothing
 
         executeOrder();
     }
@@ -200,10 +200,6 @@ public class Unit : MonoBehaviour
         SetSelection(false);
         unitAnimation.Death();
 
-        Destroy(GetComponent<UnitAnimation>());
-        Destroy(GetComponent<NavMeshAgent>());
-        Destroy(GetComponent<CapsuleCollider>());
-
         if (tag == "ally")
         {
             UnitController.Instance.DeleteUnit(this);
@@ -211,5 +207,9 @@ public class Unit : MonoBehaviour
         }
         else if (tag == "enemy")
             UnitManager.Instance.DeleteEnemyUnit(this);
+
+        Destroy(GetComponent<CapsuleCollider>());
+        Destroy(GetComponent<NavMeshAgent>());
+        Destroy(GetComponent<UnitAnimation>());
     }
 }

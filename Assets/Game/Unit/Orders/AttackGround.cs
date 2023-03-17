@@ -14,9 +14,9 @@ public class AttackGround : Order
         return "AttackGround";
     }
 
-    public void PlayOrderSound(UnitSound unitSound)
+    public void PlayOrderSound(UnitSound unitSound, AudioSource system)
     {
-        unitSound.PlayAttackVoiceSound();
+        unitSound.PlayAttackVoiceSound(system);
     }
 
     public bool ControllUnit(Unit unit)

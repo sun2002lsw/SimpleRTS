@@ -11,6 +11,7 @@ public class UnitController : MonoBehaviour
     public static UnitController Instance { get { return instance; } }
 
     private Camera mainCamera;
+    private AudioSource audioSource;
 
     private Texture2D currentCursor;
     [SerializeField]
@@ -50,6 +51,7 @@ public class UnitController : MonoBehaviour
             Destroy(gameObject);
 
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        audioSource = GetComponent<AudioSource>();
         selectionBox = transform.Find("Canvas").Find("SelectionBox").GetComponent<RectTransform>();
         Cursor.lockState = CursorLockMode.Confined;
     }
@@ -138,7 +140,7 @@ public class UnitController : MonoBehaviour
             {
                 selectedUnits.Add(selectUnit);
                 selectUnit.SetSelection(true);
-                selectUnit.PlaySelectionVoice();
+                selectUnit.PlaySelectionVoice(audioSource);
             }
             else if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -276,7 +278,7 @@ public class UnitController : MonoBehaviour
 
             if (!alreadySound)
             {
-                unit.PlayOrderSound(order);
+                unit.PlayOrderSound(order, audioSource);
                 alreadySound = true;
             }
 
@@ -342,7 +344,7 @@ public class UnitController : MonoBehaviour
         selectionBox.sizeDelta = Vector2.zero;
 
         if (selectedUnits.Count > 0)
-            selectedUnits.First<Unit>().PlaySelectionVoice();
+            selectedUnits.First<Unit>().PlaySelectionVoice(audioSource);
     }
 
     void cancelBoxingSelect()

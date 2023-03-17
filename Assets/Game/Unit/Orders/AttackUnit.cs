@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AttackUnit : Order
 {
     private Unit target;
@@ -12,9 +14,9 @@ public class AttackUnit : Order
         return "AttackUnit";
     }
 
-    public void PlayOrderSound(UnitSound unitSound)
+    public void PlayOrderSound(UnitSound unitSound, AudioSource system)
     {
-        unitSound.PlayAttackVoiceSound();
+        unitSound.PlayAttackVoiceSound(system);
     }
 
     public bool ControllUnit(Unit unit)
