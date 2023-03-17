@@ -41,9 +41,8 @@ public class Unit : MonoBehaviour
 
     public void SetSelection(bool selected) { spriteRenderer.enabled = selected; }
     public void PlaySelectionVoice() { unitSound.PlaySelectVoiceSound(); }
-    public void PlayMoveVoice() { unitSound.PlayMoveVoiceSound(); }
-    public void PlayAttackVoice() { unitSound.PlayAttackVoiceSound(); }
 
+    public void PlayOrderSound(Order order) { order.PlayOrderSound(unitSound); }
     public void GiveOrder(Order order, bool cancelOtherOrders)
     {
         if (cancelOtherOrders)

@@ -81,15 +81,13 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            foreach (var unit in selectedUnits)
-                unit.GiveOrder(new Stop(unit.CurPosition), cancelOtherOrders);
+            orderSelectedUnitsWithSound(unit => new Stop(unit.CurPosition));
             return;
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            foreach (var unit in selectedUnits)
-                unit.GiveOrder(new Hold(), cancelOtherOrders);
+            orderSelectedUnitsWithSound(unit => new Hold());
             return;
         }
     }
@@ -244,41 +242,19 @@ public class UnitController : MonoBehaviour
     void attackWithFormation()
     {
         Vector3 center = selectedUnitsCenter();
-
-        foreach (var unit in selectedUnits)
-        {
-            Vector3 destination = mouseObjectPos + (unit.transform.position - center);
-            unit.GiveOrder(new AttackGround(destination), cancelOtherOrders);
-        }
-
-        if (selectedUnits.Count > 0)
-            selectedUnits.First<Unit>().PlayAttackVoice();
+        orderSelectedUnitsWithSound(unit => new AttackGround(mouseObjectPos + unit.transform.position - center));
     }
 
     void moveWithFormation()
     {
         Vector3 center = selectedUnitsCenter();
-
-        foreach (var unit in selectedUnits)
-        {
-            Vector3 destination = mouseObjectPos + unit.transform.position - center;
-            unit.GiveOrder(new Move(destination), cancelOtherOrders);
-        }
-
-        if (selectedUnits.Count > 0)
-            selectedUnits.First<Unit>().PlayMoveVoice();
+        orderSelectedUnitsWithSound(unit => new Move(mouseObjectPos + unit.transform.position - center));
     }
 
     void attackUnit()
     {
         Unit target = mouseObject.GetComponent<Unit>();
-        Order order = new AttackUnit(target);
-
-        foreach (var unit in selectedUnits)
-            unit.GiveOrder(order, cancelOtherOrders);
-
-        if (selectedUnits.Count > 0)
-            selectedUnits.First<Unit>().PlayAttackVoice();
+        orderSelectedUnitsWithSound(unit => new AttackUnit(target));
     }
 
     Vector3 selectedUnitsCenter()
@@ -288,6 +264,24 @@ public class UnitController : MonoBehaviour
             total += unit.transform.position;
 
         return total / selectedUnits.Count;
+    }
+
+    void orderSelectedUnitsWithSound(Func<Unit, Order> orderCreator)
+    {
+        bool alreadySound = false;
+
+        foreach (var unit in selectedUnits)
+        {
+            Order order = orderCreator(unit);
+
+            if (!alreadySound)
+            {
+                unit.PlayOrderSound(order);
+                alreadySound = true;
+            }
+
+            unit.GiveOrder(order, cancelOtherOrders);
+        }
     }
 
     void processBoxingSelect()

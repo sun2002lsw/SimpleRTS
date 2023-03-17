@@ -4379,6 +4379,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1a4f7f9b77d3c514c97f50e62867fff0, type: 3}
   - {fileID: 8300000, guid: 28311a96e42fb3649b1ca59ea7ed392c, type: 3}
   - {fileID: 8300000, guid: bd7cf0792402448419d8faffc17b4fd8, type: 3}
+  stopVoiceSounds:
+  - {fileID: 8300000, guid: 621df83f231412146a9e2e967643544e, type: 3}
+  holdVoiceSounds:
+  - {fileID: 8300000, guid: 2d1c1c62dccd28e45b0dc00f4d3e9ea5, type: 3}
   moveVoiceSounds:
   - {fileID: 8300000, guid: e54f035b3eedd2946b0258a26fa1eb8e, type: 3}
   - {fileID: 8300000, guid: 3f5f1503e84034a4b86bb1c194279322, type: 3}

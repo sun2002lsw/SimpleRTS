@@ -12,6 +12,11 @@ public class AttackUnit : Order
         return "AttackUnit";
     }
 
+    public void PlayOrderSound(UnitSound unitSound)
+    {
+        unitSound.PlayAttackVoiceSound();
+    }
+
     public bool ControllUnit(Unit unit)
     {
         return unit.AttackUnit(target);

@@ -15,6 +15,11 @@ public class Stop : Order
         return "Stop";
     }
 
+    public void PlayOrderSound(UnitSound unitSound)
+    {
+        unitSound.PlayStopVoiceSound();
+    }
+
     public bool ControllUnit(Unit unit)
     {
         if (unit.DetectedEnemy == null)

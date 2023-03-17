@@ -14,6 +14,11 @@ public class AttackGround : Order
         return "AttackGround";
     }
 
+    public void PlayOrderSound(UnitSound unitSound)
+    {
+        unitSound.PlayAttackVoiceSound();
+    }
+
     public bool ControllUnit(Unit unit)
     {
         if (unit.DetectedEnemy == null)

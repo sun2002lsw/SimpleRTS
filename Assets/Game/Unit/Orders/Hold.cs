@@ -7,6 +7,11 @@ public class Hold : Order
         return "Hold";
     }
 
+    public void PlayOrderSound(UnitSound unitSound)
+    {
+        unitSound.PlayHoldVoiceSound();
+    }
+
     public bool ControllUnit(Unit unit)
     {
         unit.DefendPosition();
