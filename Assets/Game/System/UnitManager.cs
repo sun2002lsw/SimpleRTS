@@ -3,8 +3,22 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
+    private static UnitManager instance = null;
+    public static UnitManager Instance { get { return instance; } }
+
     HashSet<Unit> allyUnits = new HashSet<Unit>();
     HashSet<Unit> enemyUnits = new HashSet<Unit>();
+
+    public void DeleteAllyUnit(Unit unit) { allyUnits.Remove(unit); }
+    public void DeleteEnemyUnit(Unit unit) { enemyUnits.Remove(unit); }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     void Start()
     {

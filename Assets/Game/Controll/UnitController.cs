@@ -7,6 +7,9 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class UnitController : MonoBehaviour
 {
+    private static UnitController instance = null;
+    public static UnitController Instance { get { return instance; } }
+
     private Camera mainCamera;
 
     private Texture2D currentCursor;
@@ -33,8 +36,19 @@ public class UnitController : MonoBehaviour
     private HashSet<Unit> selectableUnits = new HashSet<Unit>();
     private HashSet<Unit> selectedUnits = new HashSet<Unit>();
 
+    public void DeleteUnit(Unit unit)
+    {
+        selectableUnits.Remove(unit);
+        selectedUnits.Remove(unit);
+    }
+
     void Awake()
     {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         selectionBox = transform.Find("Canvas").Find("SelectionBox").GetComponent<RectTransform>();
         Cursor.lockState = CursorLockMode.Confined;
@@ -274,13 +288,20 @@ public class UnitController : MonoBehaviour
                 newBoxingUnits.Add(unit);
         }
 
+        // extracted units
+        HashSet<Unit> extractedUnits = new HashSet<Unit>();
         foreach (Unit unit in selectionBoxUnits)
             if (!newBoxingUnits.Contains(unit))
+                extractedUnits.Add(unit);
+
+        foreach (Unit unit in extractedUnits)
+            if (!selectedUnits.Contains(unit))
             {
                 unit.SetSelection(false);
                 selectionBoxUnits.Remove(unit);
             }
 
+        // new added units
         foreach (Unit unit in newBoxingUnits)
             if (!selectionBoxUnits.Contains(unit))
             {

@@ -184,6 +184,14 @@ public class Unit : MonoBehaviour
         orders.Clear();
         Destroy(GetComponent<NavMeshAgent>());
 
+        if (tag == "ally")
+        {
+            UnitController.Instance.DeleteUnit(this);
+            UnitManager.Instance.DeleteAllyUnit(this);
+        }
+        else if (tag == "enemy")
+            UnitManager.Instance.DeleteEnemyUnit(this);
+
         int deathAnimationIdx = UnityEngine.Random.Range(1, 3);
         animator.SetTrigger("death" + deathAnimationIdx);
     }
