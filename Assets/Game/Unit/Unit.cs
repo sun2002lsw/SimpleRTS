@@ -14,10 +14,10 @@ public class Unit : MonoBehaviour
     private float hp;
     private Queue<Order> orders = new Queue<Order>();
 
-    private AudioSource audioSource;
-    private UnitAnimation unitAnimation;
-    private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
+    private NavMeshAgent navMeshAgent;
+    private UnitAnimation unitAnimation;
+    private UnitSound unitSound;
 
     public Vector3 CurPosition
     { 
@@ -54,10 +54,10 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        unitAnimation = GetComponent<UnitAnimation>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
         spriteRenderer = transform.Find("SelectionUI").GetComponent<SpriteRenderer>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        unitAnimation = GetComponent<UnitAnimation>();
+        unitSound = GetComponent<UnitSound>();
     }
 
     void Start()
@@ -209,16 +209,5 @@ public class Unit : MonoBehaviour
         }
         else if (tag == "enemy")
             UnitManager.Instance.DeleteEnemyUnit(this);
-    }
-
-    // SOUND
-    [SerializeField]
-    private List<AudioClip> attackSounds;
-
-    public void PlayAttackSound()
-    {
-        int attackSoundIdx = UnityEngine.Random.Range(0, attackSounds.Count);
-        audioSource.clip = attackSounds[attackSoundIdx];
-        audioSource.Play();
     }
 }
