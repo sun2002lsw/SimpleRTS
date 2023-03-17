@@ -37,6 +37,8 @@ public class UnitManager : MonoBehaviour
 
     void calculateNearestEnemy()
     {
+        // todo. replace with kd-tree
+
         foreach (Unit allyUnit in allyUnits)
         {
             float shortestDistance = float.MaxValue;

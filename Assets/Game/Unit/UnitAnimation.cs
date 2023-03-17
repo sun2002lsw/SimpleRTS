@@ -1,0 +1,45 @@
+using UnityEngine;
+using UnityEngine.AI;
+
+public class UnitAnimation : MonoBehaviour
+{
+    private Animator animator;
+    private NavMeshAgent navMeshAgent;
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
+    void Update()
+    {
+        moveAnimation();
+    }
+
+    void moveAnimation()
+    {
+        bool isMoving = navMeshAgent.velocity.magnitude > 2;
+        animator.SetBool("isMoving", isMoving);
+    }
+
+    public void Attack()
+    {
+        animator.SetBool("isMoving", false);
+        animator.SetTrigger("attack");
+    }
+
+    public void TakeDamage()
+    {
+        bool isIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
+        bool isHold = false;
+        if (isIdle || isHold)
+            animator.SetTrigger("takeDamage");
+    }
+
+    public void Death()
+    {
+        int deathAnimationIdx = Random.Range(1, 3); // 1 or 2
+        animator.SetTrigger("death" + deathAnimationIdx);
+    }
+}

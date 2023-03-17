@@ -14,8 +14,8 @@ public class Unit : MonoBehaviour
     private float hp;
     private Queue<Order> orders = new Queue<Order>();
 
-    private Animator animator;
     private AudioSource audioSource;
+    private UnitAnimation unitAnimation;
     private NavMeshAgent navMeshAgent;
     private SpriteRenderer spriteRenderer;
 
@@ -54,8 +54,8 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
-        animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        unitAnimation = GetComponent<UnitAnimation>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         spriteRenderer = transform.Find("SelectionUI").GetComponent<SpriteRenderer>();
     }
@@ -100,18 +100,7 @@ public class Unit : MonoBehaviour
             navMeshAgent.SetDestination(destination);
 
         // arrived at destination
-        if (Vector3.Distance(CurPosition, navMeshAgent.destination) < 1)
-        {
-            animator.SetBool("isMoving", false);
-            return true;
-        }
-
-        if (navMeshAgent.velocity.magnitude > 2)
-            animator.SetBool("isMoving", true);
-        else
-            animator.SetBool("isMoving", false);
-
-        return false;
+        return Vector3.Distance(CurPosition, navMeshAgent.destination) < 1;
     }
 
     public IsComplete AttackUnit(Unit target)
@@ -130,10 +119,7 @@ public class Unit : MonoBehaviour
 
         // stop
         if (navMeshAgent.destination != CurPosition)
-        {
             navMeshAgent.SetDestination(CurPosition);
-            animator.SetBool("isMoving", false);
-        }
 
         // face the target
         if (!rotateTo(target.CurPosition))
@@ -144,8 +130,8 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return false;
 
+        unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
-        animator.SetTrigger("attack");
         StartCoroutine(giveDamage(target));
         return false;
     }
@@ -154,10 +140,7 @@ public class Unit : MonoBehaviour
     {
         // stop
         if (navMeshAgent.destination != CurPosition)
-        {
             navMeshAgent.SetDestination(CurPosition);
-            animator.SetBool("isMoving", false);
-        }
 
         if (DetectedEnemy == null)
             return;
@@ -176,8 +159,8 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return;
 
+        unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
-        animator.SetTrigger("attack");
         StartCoroutine(giveDamage(DetectedEnemy));
     }
 
@@ -203,22 +186,19 @@ public class Unit : MonoBehaviour
     void takeDamage(float damage)
     {
         hp -= damage;
-        if (hp <= 0)
-        {
+        if (hp > 0)
+            unitAnimation.TakeDamage();
+        else
             processDeath();
-            return;
-        }
-
-        bool isIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
-        bool isHold = false;
-        if (isIdle || isHold)
-            animator.SetTrigger("takeDamage");
     }
 
     void processDeath()
     {
         orders.Clear();
         SetSelection(false);
+        unitAnimation.Death();
+
+        Destroy(GetComponent<UnitAnimation>());
         Destroy(GetComponent<NavMeshAgent>());
         Destroy(GetComponent<CapsuleCollider>());
 
@@ -229,9 +209,6 @@ public class Unit : MonoBehaviour
         }
         else if (tag == "enemy")
             UnitManager.Instance.DeleteEnemyUnit(this);
-
-        int deathAnimationIdx = UnityEngine.Random.Range(1, 3); // 1 or 2
-        animator.SetTrigger("death" + deathAnimationIdx);
     }
 
     // SOUND
