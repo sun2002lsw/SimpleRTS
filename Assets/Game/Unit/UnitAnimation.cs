@@ -29,15 +29,25 @@ public class UnitAnimation : MonoBehaviour
             animator.ResetTrigger("attack"); // attack is triggered, but target is dead
     }
 
-    public bool IsAttacking()
+    public void Hold(bool set)
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+        animator.SetBool("isHolding", set);
+    }
+
+    public bool IsHolding()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Hold");
     }
 
     public void Attack()
     {
         animator.SetBool("isMoving", false);
         animator.SetTrigger("attack");
+    }
+
+    public bool IsAttacking()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
     }
 
     public void TakeDamage()

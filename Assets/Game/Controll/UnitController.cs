@@ -53,7 +53,7 @@ public class UnitController : MonoBehaviour
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         audioSource = GetComponent<AudioSource>();
         selectionBox = transform.Find("Canvas").Find("SelectionBox").GetComponent<RectTransform>();
-        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start()

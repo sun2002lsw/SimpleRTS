@@ -95,6 +95,8 @@ public class Unit : MonoBehaviour
 
     public IsComplete MoveTo(Vector3 destination)
     {
+        if (unitAnimation.IsHolding())
+            unitAnimation.Hold(false);
         if (unitAnimation.IsAttacking())
             return false;
 
@@ -143,6 +145,8 @@ public class Unit : MonoBehaviour
         // stop
         if (navMeshAgent.destination != CurPosition)
             navMeshAgent.SetDestination(CurPosition);
+        if (!unitAnimation.IsHolding())
+            unitAnimation.Hold(true);
 
         if (DetectedEnemy == null)
             return;
