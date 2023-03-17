@@ -39,10 +39,10 @@ public class Unit : MonoBehaviour
         private set { }
     }
 
-    public void SetSelection(bool selected)
-    {
-        spriteRenderer.enabled = selected;
-    }
+    public void SetSelection(bool selected) { spriteRenderer.enabled = selected; }
+    public void PlaySelectionVoice() { unitSound.PlaySelectVoiceSound(); }
+    public void PlayMoveVoice() { unitSound.PlayMoveVoiceSound(); }
+    public void PlayAttackVoice() { unitSound.PlayAttackVoiceSound(); }
 
     public void GiveOrder(Order order, bool cancelOtherOrders)
     {
@@ -96,6 +96,9 @@ public class Unit : MonoBehaviour
 
     public IsComplete MoveTo(Vector3 destination)
     {
+        if (unitAnimation.IsAttacking())
+            return false;
+
         if (navMeshAgent.destination != destination)
             navMeshAgent.SetDestination(destination);
 

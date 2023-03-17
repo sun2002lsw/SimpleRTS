@@ -4371,6 +4371,32 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c4e18fe68c7a6364e910e52010d5a6e3, type: 3}
   - {fileID: 8300000, guid: 4e9e2ff8fae85ce47befab3f088ca9ba, type: 3}
   - {fileID: 8300000, guid: e2c6870f813b0f44c82dc6ca0ed1ff8d, type: 3}
+  takeDamageSounds:
+  - {fileID: 8300000, guid: d48caef514cecdb44bf11a0507cda151, type: 3}
+  - {fileID: 8300000, guid: f47b6e6089114544986afbd8d3ce9636, type: 3}
+  selectVoiceSounds:
+  - {fileID: 8300000, guid: 903a0206e0c1a194b8dd95ead19e74c9, type: 3}
+  - {fileID: 8300000, guid: 1a4f7f9b77d3c514c97f50e62867fff0, type: 3}
+  - {fileID: 8300000, guid: 28311a96e42fb3649b1ca59ea7ed392c, type: 3}
+  - {fileID: 8300000, guid: bd7cf0792402448419d8faffc17b4fd8, type: 3}
+  moveVoiceSounds:
+  - {fileID: 8300000, guid: e54f035b3eedd2946b0258a26fa1eb8e, type: 3}
+  - {fileID: 8300000, guid: 3f5f1503e84034a4b86bb1c194279322, type: 3}
+  - {fileID: 8300000, guid: 2db43598ed62d5843b7b91591e99930e, type: 3}
+  - {fileID: 8300000, guid: 8a09cd4d670cb1c4bbfe893c90ca1347, type: 3}
+  attackVoiceSounds:
+  - {fileID: 8300000, guid: 1be9cb2f75f2d884aa80794ebf50681e, type: 3}
+  - {fileID: 8300000, guid: ed3f187960ee1944887f64d0d3d2bf9a, type: 3}
+  - {fileID: 8300000, guid: fff3078753ab0e24bb649bf2e111a3cc, type: 3}
+  - {fileID: 8300000, guid: 9c16a06c9b0d4e54e8d15b9634926126, type: 3}
+  painVoiceSounds:
+  - {fileID: 8300000, guid: 2f59d7497aece564ebc626ef3cea8f0f, type: 3}
+  - {fileID: 8300000, guid: 494354c6b00af6f4eaf6b54a4967871e, type: 3}
+  - {fileID: 8300000, guid: 3a5cc7048c19f9f4aa4cd0a1bddd01ca, type: 3}
+  deathVoiceSounds:
+  - {fileID: 8300000, guid: e84cf130404f75b4d8582e335f26d661, type: 3}
+  - {fileID: 8300000, guid: 5b80eebe44827c04b82885ab62610107, type: 3}
+  - {fileID: 8300000, guid: 66023de1183640a4ebbca08d54271746, type: 3}
 --- !u!1 &6584937697187370081
 GameObject:
   m_ObjectHideFlags: 0

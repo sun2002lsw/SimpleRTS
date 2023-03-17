@@ -140,6 +140,7 @@ public class UnitController : MonoBehaviour
             {
                 selectedUnits.Add(selectUnit);
                 selectUnit.SetSelection(true);
+                selectUnit.PlaySelectionVoice();
             }
             else if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -249,6 +250,9 @@ public class UnitController : MonoBehaviour
             Vector3 destination = mouseObjectPos + (unit.transform.position - center);
             unit.GiveOrder(new AttackGround(destination), cancelOtherOrders);
         }
+
+        if (selectedUnits.Count > 0)
+            selectedUnits.First<Unit>().PlayAttackVoice();
     }
 
     void moveWithFormation()
@@ -260,6 +264,9 @@ public class UnitController : MonoBehaviour
             Vector3 destination = mouseObjectPos + unit.transform.position - center;
             unit.GiveOrder(new Move(destination), cancelOtherOrders);
         }
+
+        if (selectedUnits.Count > 0)
+            selectedUnits.First<Unit>().PlayMoveVoice();
     }
 
     void attackUnit()
@@ -269,6 +276,9 @@ public class UnitController : MonoBehaviour
 
         foreach (var unit in selectedUnits)
             unit.GiveOrder(order, cancelOtherOrders);
+
+        if (selectedUnits.Count > 0)
+            selectedUnits.First<Unit>().PlayAttackVoice();
     }
 
     Vector3 selectedUnitsCenter()
@@ -336,6 +346,9 @@ public class UnitController : MonoBehaviour
 
         selectionBoxUnits.Clear();
         selectionBox.sizeDelta = Vector2.zero;
+
+        if (selectedUnits.Count > 0)
+            selectedUnits.First<Unit>().PlaySelectionVoice();
     }
 
     void cancelBoxingSelect()

@@ -19,8 +19,19 @@ public class UnitAnimation : MonoBehaviour
 
     void moveAnimation()
     {
+        if (IsAttacking())
+            return;
+
         bool isMoving = navMeshAgent.velocity.magnitude > 2;
         animator.SetBool("isMoving", isMoving);
+
+        if (isMoving)
+            animator.ResetTrigger("attack"); // attack is triggered, but target is dead
+    }
+
+    public bool IsAttacking()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
     }
 
     public void Attack()
