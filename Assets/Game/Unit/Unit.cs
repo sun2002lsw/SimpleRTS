@@ -86,7 +86,10 @@ public class Unit : MonoBehaviour
     void executeOrder()
     {
         if (orders.Count == 0)
+        {
             orders.Enqueue(new Stop(CurPosition));
+            navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_NORMAL;
+        }
 
         Order curOrder = orders.Peek();
         IsComplete complete = curOrder.ControllUnit(this);
@@ -96,6 +99,8 @@ public class Unit : MonoBehaviour
 
     public IsComplete MoveTo(Vector3 destination)
     {
+        navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_MOVE;
+
         if (unitAnimation.IsHolding())
             unitAnimation.Hold(false);
         if (unitAnimation.IsAttacking())
@@ -110,6 +115,8 @@ public class Unit : MonoBehaviour
 
     public IsComplete AttackUnit(Unit target)
     {
+        navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_MOVE;
+
         // already dead
         if (target.hp <= 0)
             return true;
@@ -135,14 +142,16 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return false;
 
+        MeleeAttack(target);
         unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
-        StartCoroutine(giveDamage(target));
         return false;
     }
 
     public void DefendPosition()
     {
+        navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_STOP;
+
         // stop
         if (navMeshAgent.destination != CurPosition)
             navMeshAgent.SetDestination(CurPosition);
@@ -166,9 +175,9 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return;
 
+        MeleeAttack(DetectedEnemy);
         unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
-        StartCoroutine(giveDamage(DetectedEnemy));
     }
 
     IsComplete rotateTo(Vector3 destination)
@@ -183,10 +192,19 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    IEnumerator giveDamage(Unit target)
+    void MeleeAttack(Unit target)
+    {
+        navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_STOP;
+        StartCoroutine(giveMeleeDamage(target));
+    }
+
+    IEnumerator giveMeleeDamage(Unit target)
     {
         yield return new WaitForSeconds(UnitData.DamageDelay);
+        if (hp <= 0)
+            yield break; // dead unit
 
+        navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_NORMAL;
         target.takeDamage(UnitData.Damage);
     }
 
@@ -217,4 +235,11 @@ public class Unit : MonoBehaviour
         Destroy(GetComponent<NavMeshAgent>());
         Destroy(GetComponent<UnitAnimation>());
     }
+}
+
+static class Constants
+{
+    public const int AVOIDANCE_PRIORITY_NORMAL = 50;
+    public const int AVOIDANCE_PRIORITY_MOVE = 30;
+    public const int AVOIDANCE_PRIORITY_STOP = 0;
 }
