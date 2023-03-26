@@ -1176,7 +1176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 236721920248503670}
+  - {fileID: 4021434646886001482}
   m_Father: {fileID: 4149861076875601898}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1847,37 +1847,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: '
-
-    Transform ''bn_HairSway'' has been deleted
-
-    Transform
-    ''bn_HairSway'' has been deleted
-
-    Transform ''bn_Left_Eye'' has been deleted
-
-    Transform
-    ''bn_Left_Eye'' has been deleted
-
-    Transform ''bn_Right_Eye'' has been deleted
-
-    Transform
-    ''bn_Right_Eye'' has been deleted
-
-    Transform ''bn_Head'' has been deleted
-
-    Transform
-    ''bn_Head'' has been deleted
-
-    Transform ''bn_Neck_B'' has been deleted
-
-    Transform
-    ''bn_Neck_B'' has been deleted
-
-    Transform ''bn_Neck_A'' has been deleted
-
-    Transform
-    ''bn_Neck_A'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2905,7 +2875,7 @@ Transform:
   m_Father: {fileID: 4149861076875601436}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &236721920248303530
+--- !u!1001 &4021434646885677462
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2914,7 +2884,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 129032, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
       propertyPath: m_Name
-      value: staff+fx_prefab
+      value: Staff
       objectReference: {fileID: 0}
     - target: {fileID: 463580, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
       propertyPath: m_RootOrder
@@ -2938,7 +2908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 463580, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 463580, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2972,26 +2942,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 19818286, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
-      propertyPath: InitialModule.startRotationX.scalar
-      value: 3.1415927
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818286, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
-      propertyPath: InitialModule.startRotationY.scalar
-      value: 3.1415927
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818286, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
-      propertyPath: InitialModule.startRotationX.minMaxState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 19818286, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
-      propertyPath: InitialModule.startRotationY.minMaxState
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
---- !u!4 &236721920248503670 stripped
+--- !u!4 &4021434646886001482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 463580, guid: 96b97c1a1ad3e0a439810294437df4e8, type: 3}
-  m_PrefabInstance: {fileID: 236721920248303530}
+  m_PrefabInstance: {fileID: 4021434646885677462}
   m_PrefabAsset: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3334884}
   - component: {fileID: 2364436}
   m_Layer: 0
-  m_Name: staff+fx_prefab
+  m_Name: Staff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
