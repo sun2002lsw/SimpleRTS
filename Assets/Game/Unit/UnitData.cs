@@ -12,8 +12,20 @@ public class UnitData : ScriptableObject
     public float MaxHP { get { return maxHP; } }
 
     [SerializeField]
-    private float damage;
-    public float Damage { get { return damage; } }
+    private float physicalDamage;
+    public float PhysicalDamage { get { return physicalDamage; } }
+
+    [SerializeField]
+    private float physicalResistance;
+    public float PhysicalResistance { get { return physicalResistance; } }
+
+    [SerializeField]
+    private float magicalDamage;
+    public float MagicalDamage { get { return magicalDamage; } }
+
+    [SerializeField]
+    private float magicalResistance;
+    public float MagicalResistance { get { return magicalResistance; } }
 
     [SerializeField]
     private float damageDelay;

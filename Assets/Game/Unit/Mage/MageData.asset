@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: MageData
   m_EditorClassIdentifier: 
   unitName: mage
-  maxHP: 30
-  damage: 10
-  damageDelay: 0.3
-  attackDelay: 2
-  attackRange: 1.5
-  detectRange: 10
+  maxHP: 100
+  physicalDamage: 0
+  physicalResistance: 0
+  magicalDamage: 100
+  magicalResistance: 90
+  damageDelay: 1.5
+  attackDelay: 3
+  attackRange: 15
+  detectRange: 15
   rotationSpeed: 3
-  movementSpeed: 5
+  movementSpeed: 3

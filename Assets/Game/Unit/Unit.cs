@@ -142,7 +142,7 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return false;
 
-        MeleeAttack(target);
+        attackUnit(target);
         unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
         return false;
@@ -175,7 +175,7 @@ public class Unit : MonoBehaviour
         if (nextAttackTime > DateTime.Now)
             return;
 
-        MeleeAttack(DetectedEnemy);
+        attackUnit(DetectedEnemy);
         unitAnimation.Attack();
         lastAttackTime = DateTime.Now;
     }
@@ -192,24 +192,31 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    void MeleeAttack(Unit target)
+    void attackUnit(Unit target)
     {
         navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_STOP;
-        StartCoroutine(giveMeleeDamage(target));
+        StartCoroutine(giveDamage(target));
     }
 
-    IEnumerator giveMeleeDamage(Unit target)
+    IEnumerator giveDamage(Unit target)
     {
         yield return new WaitForSeconds(UnitData.DamageDelay);
         if (hp <= 0)
             yield break; // dead unit
 
         navMeshAgent.avoidancePriority = Constants.AVOIDANCE_PRIORITY_NORMAL;
-        target.takeDamage(UnitData.Damage);
+        target.takeDamage(UnitData.PhysicalDamage, UnitData.MagicalDamage);
     }
 
-    void takeDamage(float damage)
+    void takeDamage(float physicalDamage, float magicalDamage)
     {
+        physicalDamage *= (100.0f - UnitData.PhysicalResistance) / 100.0f;
+        magicalDamage  *= (100.0f - UnitData.MagicalResistance)  / 100.0f;
+        float damage = physicalDamage + magicalDamage;
+
+        if (hp <= 0)
+            return; // race condition by coroutine
+
         hp -= damage;
         if (hp > 0)
             unitAnimation.TakeDamage();
