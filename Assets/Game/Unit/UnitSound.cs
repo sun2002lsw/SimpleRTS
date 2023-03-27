@@ -45,6 +45,9 @@ public class UnitSound : MonoBehaviour
 
     private void playOneRandomSound(List<AudioClip> sounds, AudioSource systemAudioSoure)
     {
+        if (sounds.Count == 0) 
+            return;
+
         AudioSource audioSource;
         if (systemAudioSoure != null)
             audioSource = systemAudioSoure;
