@@ -7,12 +7,20 @@ public class UnitSpawner : MonoBehaviour
     private GameObject swordsmanPrefab;
     [SerializeField]
     private UnitData swordsmanData;
+    [SerializeField]
+    private GameObject magePrefab;
+    [SerializeField]
+    private UnitData mageData;
 
     void Awake()
     {
         for (float x = 0; x < 5; x++)
             for (float y = 10; y < 15; y++)
                 spawnSymmetryArmy(swordsmanPrefab, swordsmanData, new Vector2(x, y));
+
+        for (float x = 0; x < 5; x++)
+            for (float y = 15; y < 17; y++)
+                spawnSymmetryArmy(magePrefab, mageData, new Vector2(x, y));
     }
 
     void spawnSymmetryArmy(GameObject obj, UnitData data, Vector2 pos)
@@ -82,6 +90,18 @@ public class UnitSpawner : MonoBehaviour
 
     void setUnitColor(ref GameObject obj, Color color)
     {
+        Unit unit = obj.GetComponent<Unit>();
+        if (unit == null) 
+            return;
+
+        if (unit.UnitData.UnitName == "swordsman")
+            setSwordsmanColor(ref obj, color);
+        else if (unit.UnitData.UnitName == "mage")
+            setMageColor(ref obj, color);
+    }
+
+    void setSwordsmanColor(ref GameObject obj, Color color)
+    {
         Transform armors = obj.transform.Find("Armors");
         if (armors == null)
             return;
@@ -91,6 +111,19 @@ public class UnitSpawner : MonoBehaviour
             return;
 
         SkinnedMeshRenderer renderer = chest.GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null)
+            return;
+
+        renderer.material.color = color;
+    }
+
+    void setMageColor(ref GameObject obj, Color color)
+    {
+        Transform skinBody = obj.transform.Find("skn_EarthMage_Body");
+        if (skinBody == null)
+            return;
+
+        SkinnedMeshRenderer renderer = skinBody.GetComponent<SkinnedMeshRenderer>();
         if (renderer == null)
             return;
 
