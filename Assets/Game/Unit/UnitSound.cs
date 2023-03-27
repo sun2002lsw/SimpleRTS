@@ -11,6 +11,8 @@ public class UnitSound : MonoBehaviour
     [SerializeField]
     private List<AudioClip> attackSounds;
     [SerializeField]
+    private List<AudioClip> attackPrepareSounds;
+    [SerializeField]
     private List<AudioClip> takeDamageSounds;
     [SerializeField]
     private List<AudioClip> selectVoiceSounds;
@@ -34,6 +36,7 @@ public class UnitSound : MonoBehaviour
 
     public void PlayRoarSound() { playOneRandomSound(roarSounds, null); }
     public void PlayAttackSound() { playOneRandomSound(attackSounds, null); }
+    public void PlayAttackPrepareSound() { playOneRandomSound(attackPrepareSounds, null); }
     public void PlayTakeDamageSound() { playOneRandomSound(takeDamageSounds, null); }
     public void PlaySelectVoiceSound(AudioSource system) { playOneRandomSound(selectVoiceSounds, system); }
     public void PlayStopVoiceSound(AudioSource system) { playOneRandomSound(stopVoiceSounds, system); }

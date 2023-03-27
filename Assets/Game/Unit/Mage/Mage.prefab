@@ -1902,6 +1902,8 @@ MonoBehaviour:
   attackSounds:
   - {fileID: 8300000, guid: b5070543a2f50634e9e6c43639836401, type: 3}
   - {fileID: 8300000, guid: 2d861ab5de2e25240ab1614d01ccd006, type: 3}
+  attackPrepareSounds:
+  - {fileID: 8300000, guid: 9a7772b68fbb89b4b8518b9c62695494, type: 3}
   takeDamageSounds:
   - {fileID: 8300000, guid: a13b592aba9c51549a5a4e0d949fab06, type: 3}
   - {fileID: 8300000, guid: 5aa78fa6c2257a04f917c53e389bb945, type: 3}
