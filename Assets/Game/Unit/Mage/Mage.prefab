@@ -1895,16 +1895,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f508f9669c88542ae87940dc48e31b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roarSounds: []
-  attackSounds: []
-  takeDamageSounds: []
-  selectVoiceSounds: []
-  stopVoiceSounds: []
-  holdVoiceSounds: []
-  moveVoiceSounds: []
-  attackVoiceSounds: []
-  painVoiceSounds: []
-  deathVoiceSounds: []
+  roarSounds:
+  - {fileID: 8300000, guid: fd60fff3a03452247a2d0d6d317b9d08, type: 3}
+  - {fileID: 8300000, guid: 8db26027bb56cd4428bc408178ecb451, type: 3}
+  - {fileID: 8300000, guid: 461a9def1e0754944bf67ed807b78a4c, type: 3}
+  attackSounds:
+  - {fileID: 8300000, guid: b5070543a2f50634e9e6c43639836401, type: 3}
+  - {fileID: 8300000, guid: 2d861ab5de2e25240ab1614d01ccd006, type: 3}
+  takeDamageSounds:
+  - {fileID: 8300000, guid: a13b592aba9c51549a5a4e0d949fab06, type: 3}
+  - {fileID: 8300000, guid: 5aa78fa6c2257a04f917c53e389bb945, type: 3}
+  selectVoiceSounds:
+  - {fileID: 8300000, guid: 07e53ad1aff4f7e4199747aedbeba418, type: 3}
+  - {fileID: 8300000, guid: 5dc655038ec6dbe44a8fc83ee8fae8a8, type: 3}
+  - {fileID: 8300000, guid: a4fe070cb0307984ca9292aa1815ac64, type: 3}
+  - {fileID: 8300000, guid: ec2978fca7702084c8cec3c32eb9254d, type: 3}
+  stopVoiceSounds:
+  - {fileID: 8300000, guid: 14b5ad0c06ed8454d8fd11fe0f555c35, type: 3}
+  holdVoiceSounds:
+  - {fileID: 8300000, guid: 78812964a9908214aa6325e271122538, type: 3}
+  moveVoiceSounds:
+  - {fileID: 8300000, guid: 9ef87f3b93376e2459be7d0bf4be1ee0, type: 3}
+  - {fileID: 8300000, guid: 3888a54c77378184e97bf14e789d7f08, type: 3}
+  - {fileID: 8300000, guid: 91aa44bd7d9cb824db5f86add6478749, type: 3}
+  attackVoiceSounds:
+  - {fileID: 8300000, guid: 3fe4903c7e1757b4cb52f125f29b3592, type: 3}
+  - {fileID: 8300000, guid: e2b118d01dbad3241914d738b2392a93, type: 3}
+  - {fileID: 8300000, guid: f2231fc51ad6eae4aaa973f3a4fed081, type: 3}
+  - {fileID: 8300000, guid: 9630b1fb2fa86c7458d85c3879e18de6, type: 3}
+  painVoiceSounds:
+  - {fileID: 8300000, guid: 61c82525aa92a5145aca5d99a222d49c, type: 3}
+  - {fileID: 8300000, guid: 348f72e73133dec4293bbe1542bdd005, type: 3}
+  - {fileID: 8300000, guid: 3696a70153388d3429bc32a8859de332, type: 3}
+  deathVoiceSounds:
+  - {fileID: 8300000, guid: 772231f516d50ec44b6204a6fda2fe22, type: 3}
+  - {fileID: 8300000, guid: 7937783490b9e154c88b0bc52355aa99, type: 3}
+  - {fileID: 8300000, guid: 0d11f0b9db838434d83fd0864154360e, type: 3}
 --- !u!1 &2859173252048459017
 GameObject:
   m_ObjectHideFlags: 0
