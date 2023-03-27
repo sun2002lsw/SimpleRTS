@@ -3,6 +3,9 @@ using Cinemachine;
 
 public class CameraSystem : MonoBehaviour
 {
+    private static CameraSystem instance = null;
+    public static CameraSystem Instance { get { return instance; } }
+
     [SerializeField]
     private CinemachineVirtualCamera virtualCamera;
 
@@ -17,12 +20,30 @@ public class CameraSystem : MonoBehaviour
     private Vector3 zoomTargetOffset;
     private bool zoomProcessing;
 
-    private Vector3 savedCursorPos;
+    private Vector3 savedCursorPos; // save last position before disabling cursor
+
+    public void MoveCamera(Vector3 position)
+    {
+        // set limitation
+        position.x = Mathf.Clamp(position.x, -FIELD_SIZE, FIELD_SIZE);
+        position.z = Mathf.Clamp(position.z, -FIELD_SIZE, FIELD_SIZE);
+
+        transform.position = position;
+    }
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
+        zoomTargetOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+    }
 
     void Start()
     {
         // todo. 부드럽게 미끄러지면서 시작
-        zoomTargetOffset = virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         ResetCamera();
     }
 

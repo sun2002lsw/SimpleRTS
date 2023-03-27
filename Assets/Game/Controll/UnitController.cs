@@ -57,7 +57,7 @@ public class UnitController : MonoBehaviour
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         audioSource = GetComponent<AudioSource>();
         selectionBox = transform.Find("Canvas").Find("SelectionBox").GetComponent<RectTransform>();
-        // Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.lockState = CursorLockMode.Confined; todo. enable code
     }
 
     void Start()
@@ -121,11 +121,15 @@ public class UnitController : MonoBehaviour
 
         // load numbering units
         if (!numberingUnits.ContainsKey(numberKey))
-            return;
+            return; // numberKey not registered
         if (numberingUnits[numberKey].Count == 0)
-            return;
-        if (numberingUnits[numberKey] == selectableUnits)
-            return;
+            return; // there is nothing to select
+        if (numberingUnits[numberKey].SetEquals(selectedUnits))
+        {
+            Vector3 center = selectedUnitsCenter();
+            CameraSystem.Instance.MoveCamera(center);
+            return; // already loaded. just move camera
+        }
 
         foreach (Unit unit in selectedUnits)
             unit.SetSelection(false);
@@ -314,16 +318,16 @@ public class UnitController : MonoBehaviour
 
     void orderSelectedUnitsWithSound(Func<Unit, Order> orderCreator)
     {
-        bool alreadySound = false;
+        bool soundAlreadyPlayed = false;
 
         foreach (var unit in selectedUnits)
         {
             Order order = orderCreator(unit);
 
-            if (!alreadySound)
+            if (!soundAlreadyPlayed)
             {
                 unit.PlayOrderSound(order, audioSource);
-                alreadySound = true;
+                soundAlreadyPlayed = true;
             }
 
             unit.GiveOrder(order, cancelOtherOrders);
