@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9e2a61d06b24541a37d78113c12ee0, type: 3}
   m_Name: AssasinData
   m_EditorClassIdentifier: 
-  unitName: mage
+  unitName: assasin
   maxHP: 100
-  physicalDamage: 0
+  physicalDamage: 100
   physicalResistance: 0
-  magicalDamage: 100
-  magicalResistance: 90
-  damageDelay: 1.5
-  attackDelay: 3
-  attackRange: 15
+  magicalDamage: 0
+  magicalResistance: 99
+  damageDelay: 0.5
+  attackDelay: 2
+  attackRange: 1
   detectRange: 15
   rotationSpeed: 3
-  movementSpeed: 3
+  movementSpeed: 7
