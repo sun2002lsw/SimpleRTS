@@ -6,6 +6,10 @@ MonoImporter:
   defaultReferences:
   - swordsmanPrefab: {fileID: 6516799984629776144, guid: 732f7db735d6a3d47b3efa1acfd9672f, type: 3}
   - swordsmanData: {fileID: 11400000, guid: 0d3dd4b5492b7854e8deadb050300653, type: 2}
+  - magePrefab: {fileID: 2859173252048459015, guid: e23f980bd59dc8a4caddc60920478eff, type: 3}
+  - mageData: {fileID: 11400000, guid: c4e1430b9501c7c40b3f4aee35eaee67, type: 2}
+  - assasinPrefab: {fileID: 1637584495559616, guid: eff23a74641eb454bb20d94357656852, type: 3}
+  - assasinData: {fileID: 11400000, guid: fd0618721283e1343967aebb50ac367e, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

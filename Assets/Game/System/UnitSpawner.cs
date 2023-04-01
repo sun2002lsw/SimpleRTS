@@ -11,6 +11,10 @@ public class UnitSpawner : MonoBehaviour
     private GameObject magePrefab;
     [SerializeField]
     private UnitData mageData;
+    [SerializeField]
+    private GameObject assasinPrefab;
+    [SerializeField]
+    private UnitData assasinData;
 
     void Awake()
     {
@@ -21,6 +25,10 @@ public class UnitSpawner : MonoBehaviour
         for (float x = 0; x < 5; x++)
             for (float y = 15; y < 17; y++)
                 spawnSymmetryArmy(magePrefab, mageData, new Vector2(x, y));
+
+        for (float x = 5; x < 7; x++)
+            for (float y = 15; y < 17; y++)
+                spawnSymmetryArmy(assasinPrefab, assasinData, new Vector2(x, y));
     }
 
     void spawnSymmetryArmy(GameObject obj, UnitData data, Vector2 pos)
@@ -98,6 +106,8 @@ public class UnitSpawner : MonoBehaviour
             setSwordsmanColor(ref obj, color);
         else if (unit.UnitData.UnitName == "mage")
             setMageColor(ref obj, color);
+        else if (unit.UnitData.UnitName == "assasin")
+            setAssasinColor(ref obj, color);
     }
 
     void setSwordsmanColor(ref GameObject obj, Color color)
@@ -124,6 +134,27 @@ public class UnitSpawner : MonoBehaviour
             return;
 
         SkinnedMeshRenderer renderer = skinBody.GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null)
+            return;
+
+        renderer.material.color = color;
+    }
+
+    void setAssasinColor(ref GameObject obj, Color color)
+    {
+        Transform ork = obj.transform.Find("Ork");
+        if (ork == null)
+            return;
+
+        Transform armor = ork.Find("Armor_7");
+        if (armor == null)
+            return;
+
+        Transform armorBase = armor.Find("Armor_base");
+        if (armorBase == null)
+            return;
+
+        SkinnedMeshRenderer renderer = armorBase.GetComponent<SkinnedMeshRenderer>();
         if (renderer == null)
             return;
 
