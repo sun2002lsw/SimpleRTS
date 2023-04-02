@@ -43,7 +43,6 @@ public class CameraSystem : MonoBehaviour
 
     void Start()
     {
-        // todo. 부드럽게 미끄러지면서 시작
         ResetCamera();
     }
 

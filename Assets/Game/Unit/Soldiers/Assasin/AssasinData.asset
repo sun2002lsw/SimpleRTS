@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: assasin
   maxHP: 100
-  physicalDamage: 100
-  physicalResistance: 0
+  physicalDamage: 200
+  physicalResistance: 50
   magicalDamage: 0
   magicalResistance: 99
-  damageDelay: 0.5
-  attackDelay: 2
-  attackRange: 1
+  damageDelay: 0.4
+  attackDelay: 1
+  attackRange: 1.5
   detectRange: 15
   rotationSpeed: 3
   movementSpeed: 7

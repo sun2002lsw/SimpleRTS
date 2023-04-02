@@ -18,16 +18,16 @@ public class UnitSpawner : MonoBehaviour
 
     void Awake()
     {
-        for (float x = 0; x < 5; x++)
-            for (float y = 10; y < 15; y++)
+        for (float x = 0; x < 10; x++)
+            for (float y = 30; y < 35; y++) // 100
                 spawnSymmetryArmy(swordsmanPrefab, swordsmanData, new Vector2(x, y));
-
+        
         for (float x = 0; x < 5; x++)
-            for (float y = 15; y < 17; y++)
+            for (float y = 37; y < 40; y++) // 30
                 spawnSymmetryArmy(magePrefab, mageData, new Vector2(x, y));
 
-        for (float x = 5; x < 7; x++)
-            for (float y = 15; y < 17; y++)
+        for (float x = 7; x < 10; x++)
+            for (float y = 37; y < 40; y++) // 18
                 spawnSymmetryArmy(assasinPrefab, assasinData, new Vector2(x, y));
     }
 
@@ -113,51 +113,35 @@ public class UnitSpawner : MonoBehaviour
     void setSwordsmanColor(ref GameObject obj, Color color)
     {
         Transform armors = obj.transform.Find("Armors");
-        if (armors == null)
-            return;
-
         Transform chest = armors.Find("Chest");
-        if (chest == null)
-            return;
-
         SkinnedMeshRenderer renderer = chest.GetComponent<SkinnedMeshRenderer>();
-        if (renderer == null)
-            return;
-
         renderer.material.color = color;
     }
 
     void setMageColor(ref GameObject obj, Color color)
     {
         Transform skinBody = obj.transform.Find("skn_EarthMage_Body");
-        if (skinBody == null)
-            return;
-
         SkinnedMeshRenderer renderer = skinBody.GetComponent<SkinnedMeshRenderer>();
-        if (renderer == null)
-            return;
-
         renderer.material.color = color;
     }
 
     void setAssasinColor(ref GameObject obj, Color color)
     {
         Transform ork = obj.transform.Find("Ork");
-        if (ork == null)
-            return;
 
         Transform armor = ork.Find("Armor_7");
-        if (armor == null)
-            return;
-
         Transform armorBase = armor.Find("Armor_base");
-        if (armorBase == null)
-            return;
+        SkinnedMeshRenderer armorRenderer = armorBase.GetComponent<SkinnedMeshRenderer>();
+        armorRenderer.material.color = color;
 
-        SkinnedMeshRenderer renderer = armorBase.GetComponent<SkinnedMeshRenderer>();
-        if (renderer == null)
-            return;
+        Transform helm = ork.Find("helm_6");
+        Transform helmObj = helm.Find("helm_6_1");
+        SkinnedMeshRenderer helmRenderer = helmObj.GetComponent<SkinnedMeshRenderer>();
+        helmRenderer.material.color = color;
 
-        renderer.material.color = color;
+        Transform shoulders = ork.Find("shoulders_6");
+        Transform shouldersObj = shoulders.Find("shoulders_6_1");
+        SkinnedMeshRenderer shouldersRenderer = shouldersObj.GetComponent<SkinnedMeshRenderer>();
+        shouldersRenderer.material.color = color;
     }
 }
